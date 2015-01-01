@@ -3,5 +3,5 @@ angular.module("application", [
 
     "restangular",
 
-    "obelisk"
+    "city"
 ]);

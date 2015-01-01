@@ -8,12 +8,13 @@ angular.module("obelisk").service("obelisk.service.pixel-view", [
         var views = { },
             models = { };
 
-        this.view = function (name, canvas) {
-            var point, models;
+        this.view = function (name, $canvas) {
+            var point, models, parent;
 
-            if (canvas) {
-                point = new obelisk.Point(canvas.width() / 2, canvas.height() / 2);
-                views[name] = new obelisk.PixelView(canvas, point);
+            if ($canvas && !views[name]) {
+                parent = $canvas.parent();
+                point = new obelisk.Point($canvas.width() / 2, $canvas.height() / 2);
+                views[name] = new obelisk.PixelView($canvas, point);
                 models = this.models(name);
                 if (models) {
                     models.forEach(function (model) {

@@ -1,4 +1,4 @@
-<!-- public/views/index.html -->
+<!-- public/index.html -->
 <!doctype html>
 <html lang="en" data-ng-app="application">
 <head>
@@ -11,13 +11,15 @@
   });
  %>
 
+<script src='lib/sheetengine-1.2.0.js'></script>
+
  <%
   grunt.file.expand(paths.vendor.concat(paths.client)).forEach(function (path) {
    %><script src='<%- replace(path) %>'></script><%- "\n" %><%
   });
  %>
 
- <title>Trade Nodes</title>
+ <title>Orbital City</title>
 
 </head>
 <body data-ng-controller="application.controller.index">

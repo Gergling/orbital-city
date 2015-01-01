@@ -12,9 +12,7 @@ angular.module("application")
             containerPartial = 'modules/application/partial/container.html',
             routes = {
                 '/': { redirectTo: '/overview/' },
-                '/overview/': new Route("overview", "Overview", 'application'),
-                '/products/': new Route("products", "Products", 'product'),
-                '/nodes/': new Route("nodes", "Nodes", 'node')
+                '/overview/': new Route("overview", "Overview", 'application')
             };
 
         angular.forEach(routes, function (obj, route) {
@@ -29,18 +27,9 @@ angular.module("application")
 
         "$rootScope",
         "application.service.primary-navigation",
-        "obelisk.service.pixel-view",
 
-        function ($scope, navigation, pixelView) {
+        function ($scope, navigation) {
             "use strict";
-
-            (function () {
-                var dimension = new obelisk.CubeDimension(40, 40, 40);
-                var gray = obelisk.ColorPattern.GRAY;
-                var color = new obelisk.CubeColor().getByHorizontalColor(gray);
-                var cube = new obelisk.Cube(dimension, color, true);
-                pixelView.models("main", cube, new obelisk.Point3D(0, 0, 0));
-            }());
 
             $scope.navigation = navigation;
             $scope.$on("$routeChangeStart", function (event, next) {
