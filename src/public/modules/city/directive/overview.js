@@ -29,6 +29,16 @@ angular.module("city").directive("cityOverview", function () {
                     sheet2.context.clearRect(10,10,20,20);
 
                     obj = new sheetengine.SheetObject({x:-50,y:-50,z:0}, {alphaD:0,betaD:0,gammaD:0}, [sheet1, sheet2], {w:80,h:80,relu:40,relv:50});
+
+                    var sheets = [ ];
+                    for(var i = 0; i < 8; i += 1) {
+                        var angle = i * 360 / 8;
+                        var sheet = new sheetengine.Sheet({x:0,y:14,z:14}, {alphaD:90,betaD:0,gammaD:angle}, {w:40,h:40});
+                        sheets.push(sheet);
+                        sheet.context.fillStyle='#F00';
+                        sheet.context.fillRect(0,0,40,40);
+                    }
+                    var tube = new sheetengine.SheetObject({x:-50,y:-50,z:0}, {alphaD:0,betaD:0,gammaD:0}, sheets, {w:80,h:80,relu:40,relv:50});
                 });
                 
                 // move object around
