@@ -30,14 +30,15 @@ angular.module("city").directive("cityOverview", function () {
 
                     obj = new sheetengine.SheetObject({x:-50,y:-50,z:0}, {alphaD:0,betaD:0,gammaD:0}, [sheet1, sheet2], {w:80,h:80,relu:40,relv:50});
 
+                    // Todo: split into service for polygon.prism
                     var sheets = [ ];
-                    var faces = 8;
+                    var faces = 100;
                     var radius = 40;
                     var length = 80;
-                    var faceWidth = 40;
+                    var faceWidth = (Math.PI * radius * 2 / faces) + 3;
                     for(var i = 0; i < faces; i += 1) {
                         var t = i * Math.PI * 2 / faces;
-                        var sheet = new sheetengine.Sheet({x:0,y:40,z:0}, {alphaD:0,betaD:0,gammaD:0}, {w:length,h:faceWidth});
+                        var sheet = new sheetengine.Sheet({x:0,y:radius,z:0}, {alphaD:0,betaD:0,gammaD:0}, {w:length,h:faceWidth});
                         var rotator = new sheetengine.SheetObject({x:0,y:0,z:0}, {alphaD:0,betaD:0,gammaD:0}, [sheet], {w:0,h:0});
                         rotator.rotate({x:1, y:0, z: 0}, t);
                         sheets.concat(rotator.sheets);
