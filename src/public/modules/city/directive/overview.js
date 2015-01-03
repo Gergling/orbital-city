@@ -31,14 +31,20 @@ angular.module("city").directive("cityOverview", function () {
                     obj = new sheetengine.SheetObject({x:-50,y:-50,z:0}, {alphaD:0,betaD:0,gammaD:0}, [sheet1, sheet2], {w:80,h:80,relu:40,relv:50});
 
                     var sheets = [ ];
-                    for(var i = 0; i < 8; i += 1) {
-                        var angle = i * 360 / 8;
-                        var sheet = new sheetengine.Sheet({x:0,y:14,z:14}, {alphaD:90,betaD:0,gammaD:angle}, {w:40,h:40});
-                        sheets.push(sheet);
+                    var faces = 8;
+                    var radius = 40;
+                    var length = 80;
+                    var faceWidth = 40;
+                    for(var i = 0; i < faces; i += 1) {
+                        var t = i * Math.PI * 2 / faces;
+                        var sheet = new sheetengine.Sheet({x:0,y:40,z:0}, {alphaD:0,betaD:0,gammaD:0}, {w:length,h:faceWidth});
+                        var rotator = new sheetengine.SheetObject({x:0,y:0,z:0}, {alphaD:0,betaD:0,gammaD:0}, [sheet], {w:0,h:0});
+                        rotator.rotate({x:1, y:0, z: 0}, t);
+                        sheets.concat(rotator.sheets);
                         sheet.context.fillStyle='#F00';
-                        sheet.context.fillRect(0,0,40,40);
+                        sheet.context.fillRect(0,0,length,faceWidth);
                     }
-                    var tube = new sheetengine.SheetObject({x:-50,y:-50,z:0}, {alphaD:0,betaD:0,gammaD:0}, sheets, {w:80,h:80,relu:40,relv:50});
+                    var tube = new sheetengine.SheetObject({x:0,y:0,z:0}, {alphaD:0,betaD:0,gammaD:0}, sheets, {w:0,h:0});
                 });
                 
                 // move object around
