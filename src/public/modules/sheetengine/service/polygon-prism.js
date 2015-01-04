@@ -8,7 +8,7 @@ angular.module("sheetengine").service("sheetengine.service.polygon-prism", [
         this.generate = function (location, radius, length, faces, opts) {
             var se = window.sheetengine,
                 sheets = [ ],
-                faceWidth = (Math.PI * radius * 2 / faces) + 3,
+                faceWidth = Math.floor(Math.PI * radius * 2 / faces) + 2,
                 tube,
                 i,
                 t,
@@ -28,8 +28,8 @@ angular.module("sheetengine").service("sheetengine.service.polygon-prism", [
                 sheet = new se.Sheet(
                     {
                         x: 0,
-                        y: - radius * Math.cos(t) - (faceWidth / 2 * Math.sin(t)),
-                        z: radius * Math.sin(t)  - (faceWidth / 2 * Math.cos(t))
+                        y: - radius * Math.cos(t) - ((faceWidth + 15) / 2 * Math.sin(t)),
+                        z: radius * Math.sin(t) - ((faceWidth + 15) / 2 * Math.cos(t))
                     },
                     {alphaD: tD, betaD: 0, gammaD: 0},
                     {w: faceWidth, h: length}
