@@ -1,0 +1,7 @@
+<div class="isometric-grid" style="top: {{cellHeight}}px;">
+    <div data-ng-repeat="row in grid">
+        <div data-ng-repeat="cell in row">
+            <div city-isometric-square data-width="{{cellWidth}}" data-height="{{cellHeight}}" x="{{cell.isoX}}" y="{{cell.isoY}}"></div>
+        </div>
+    </div>
+</div>
