@@ -7,8 +7,9 @@ angular.module("city").directive("cityOverview", function () {
         controller: [
 
             "sheetengine.service.sheets",
+            "sheetengine.service.polygon-prism",
 
-            function (sheets) {
+            function (sheets, prism) {
                 var obj;
 
                 sheets.on().instantiation(function () {
@@ -28,24 +29,30 @@ angular.module("city").directive("cityOverview", function () {
                     sheet2.context.fillRect(0,0,40,40);
                     sheet2.context.clearRect(10,10,20,20);
 
-                    obj = new sheetengine.SheetObject({x:-50,y:-50,z:0}, {alphaD:0,betaD:0,gammaD:0}, [sheet1, sheet2], {w:80,h:80,relu:40,relv:50});
+                    //var obj2 = new sheetengine.SheetObject({x:0,y:0,z:0}, {alphaD:0,betaD:0,gammaD:0}, [sheet1, sheet2], {w:80,h:80,relu:40,relv:50});
+                        //obj2.setOrientation({alphaD:0,betaD:0,gammaD:90});
+                    //obj = new sheetengine.SheetObject({x:-50,y:-50,z:100}, {alphaD:0,betaD:0,gammaD:0}, obj2.sheets, {w:80,h:80,relu:40,relv:50});
+                    obj = new sheetengine.SheetObject({x:-50,y:-50,z:100}, {alphaD:0,betaD:0,gammaD:0}, [sheet1, sheet2], {w:80,h:80,relu:40,relv:50});
 
-                    // Todo: split into service for polygon.prism
-                    var sheets = [ ];
-                    var faces = 100;
+                    var faces = 8;
                     var radius = 40;
                     var length = 80;
-                    var faceWidth = (Math.PI * radius * 2 / faces) + 3;
-                    for(var i = 0; i < faces; i += 1) {
-                        var t = i * Math.PI * 2 / faces;
-                        var sheet = new sheetengine.Sheet({x:0,y:radius,z:0}, {alphaD:0,betaD:0,gammaD:0}, {w:length,h:faceWidth});
-                        var rotator = new sheetengine.SheetObject({x:0,y:0,z:0}, {alphaD:0,betaD:0,gammaD:0}, [sheet], {w:0,h:0});
-                        rotator.rotate({x:1, y:0, z: 0}, t);
-                        sheets.concat(rotator.sheets);
-                        sheet.context.fillStyle='#F00';
-                        sheet.context.fillRect(0,0,length,faceWidth);
-                    }
-                    var tube = new sheetengine.SheetObject({x:0,y:0,z:0}, {alphaD:0,betaD:0,gammaD:0}, sheets, {w:0,h:0});
+                    var rc = function () {return Math.floor(Math.random() * 256);};
+                    var road = prism.generate({x: 0, y: 0, z: 50}, radius, length, faces, {
+                        mod: function (sheet) {
+                            sheet.context.fillStyle='rgb(' + [rc(), rc(), rc()].join(", ") + ')';
+                        },
+                        //start: 10,
+                        //end: 20
+                    });
+                    console.log(road);
+                    /*var road = prism.generate({x: 0, y: 0, z: 50}, radius, length, faces, {
+                        mod: function (sheet) {sheet.context.fillStyle='#777'; },
+                        start: 10,
+                        end: 20
+                    });*/
+                    road.rotate({x: 1, y: 0, z: 0}, Math.PI);
+                    //road.setOrientation({alphaD:0,betaD:0,gammaD:90});
                 });
                 
                 // move object around

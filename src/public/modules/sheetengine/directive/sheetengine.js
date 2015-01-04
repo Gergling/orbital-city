@@ -15,6 +15,7 @@ angular.module("sheetengine").directive("sheetengine", function () {
 
                 sheets.instantiate();
 
+                // Todo: Use $timeout, find time difference.
                 setInterval(function () {
                     sheets.run();
                     sheetengine.calc.calculateChangedSheets();
