@@ -41,12 +41,7 @@ module.exports = function (grunt) {
         },
 
         banner = '/* TBE */\n'
-            + '/* <%= grunt.template.today("yyyy-mm-dd") %> */\n',
-
-        version = (function () {
-            var build = process.env.BUILD_NUMBER;
-            return build ? '?v=' + build : '';
-        }());
+            + '/* <%= grunt.template.today("yyyy-mm-dd") %> */\n';
 
     paths.server = paths.module.concat(paths.other);
     paths.specs = paths.specsClient.concat(paths.specsServer);
@@ -91,11 +86,13 @@ module.exports = function (grunt) {
             },
             client: {
                 src: paths.client,
+                browser: true,
                 directives: {
                     predef: [
                         '$',
                         'angular',
-                        'jQuery'
+                        'jQuery',
+                        'window'
                     ]
                 },
                 options: { checkstyle: 'build/logs/checkstyle.xml' }
