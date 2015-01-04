@@ -4,6 +4,19 @@ module.exports = function (png) {
     var maths = require("./maths"),
         Pixel = require("./pixel");
 
+    this.pixel = function (x, y, pixel) {
+        if (pixel) {
+            pixel.toPNG(png.data, this.channel(x, y));
+        } else {
+            pixel = new Pixel();
+            pixel.fromPNG(png.data, this.channel(x, y));
+        }
+        return pixel;
+    };
+    this.channel = function (x, y) {
+        return (png.width * y + x) * 4;
+    };
+
     this.forEach = function (fnc, fromX, fromY, toX, toY) {
         var x, y, channel, pixel;
 
@@ -15,7 +28,8 @@ module.exports = function (png) {
 
         for (y = fromY; y < toY; y += 1) {
             for (x = fromX; x < toX; x += 1) {
-                channel = (png.width * y + x) * 4;
+                //channel = (png.width * y + x) * 4;
+                channel = this.channel(x, y);
 
                 pixel = new Pixel(
                     png.data[channel],

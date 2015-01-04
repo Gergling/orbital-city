@@ -15,6 +15,12 @@ var Pixel = function (red, green, blue, alpha) {
         data[offset + 2] = this.blue;
         data[offset + 3] = this.alpha;
     };
+    this.fromPNG = function (data, offset) {
+        this.red = data[offset];
+        this.green = data[offset + 1];
+        this.blue = data[offset + 2];
+        this.alpha = data[offset + 3];
+    };
 
     this.getGradient = function (start, end, from, to, current, pixel) {
         pixel = pixel || new Pixel();
