@@ -4,9 +4,9 @@ var Pixel = function (red, green, blue, alpha) {
     var maths = require("./maths"),
         channels = ["red", "green", "blue", "alpha"];
 
-    this.red = red || 0;
-    this.green = green || 0;
-    this.blue = blue || 0;
+    this.red = red || 1;
+    this.green = green || 1;
+    this.blue = blue || 1;
     this.alpha = alpha || 255;
 
     this.toPNG = function (data, offset) {
