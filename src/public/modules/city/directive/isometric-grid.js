@@ -11,19 +11,21 @@ angular.module("city").directive("cityIsometricGrid", [
                 "$scope",
 
                 function ($scope) {
-                    var x, y, row, cell;
+                    var x, y, z, row, cell;
 
+                    // This is where the array of squares is generated.
+                    // The array needs to be in order of distance from the view point.
+                    // Closest objects appear later in the array.
+                    // Todo: Take tiles from a service.
                     $scope.cellHeight = $scope.cellWidth / 2;
-                    $scope.grid = [];
-                    for (y = 0; y < 3; y += 1) {
-                        row = [];
+                    $scope.tiles = [];
+                    for (z = 0; z < 3; z += 1) {
                         for (x = 0; x < 3; x += 1) {
-                            cell = {x: x, y: y};
-                            cell.isoX = x + y;
-                            cell.isoY = x + 1 - y;
-                            row.push(cell);
+                            cell = {x: x, z: z};
+                            cell.isoX = (x + z) / 2;
+                            cell.isoY = (x + 1 - z) / 2;
+                            $scope.tiles.push(cell);
                         }
-                        $scope.grid.push(row);
                     }
                 }
             ]
