@@ -6,6 +6,6 @@
 }
 .isometric-grid .isometric-square {
 	position: absolute;
-	border: solid 1px grey;
+	text-align: center;
 	background: url(../media/image/isometric-square-100x50-empty.png);
 }
