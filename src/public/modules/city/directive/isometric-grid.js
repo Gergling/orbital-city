@@ -11,7 +11,7 @@ angular.module("city").directive("cityIsometricGrid", [
 
                 function ($scope, tiles) {
                     $scope.cellHeight = $scope.cellWidth / 2;
-                    $scope.tiles = tiles.get();
+                    tiles.onChange(function () {$scope.tiles = tiles.visible(); });
                 }
             ]
         };

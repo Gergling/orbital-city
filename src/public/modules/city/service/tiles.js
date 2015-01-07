@@ -37,20 +37,15 @@ angular.module("city").service("city.service.tiles", [
                     }
                     return isVisible;
                 });
-            };
+                updateCallbacks.forEach(function (fnc) {fnc(); });
+            },
+            updateCallbacks = [ ];
 
         for (z = 0; z < 3; z += 1) {
             for (x = 0; x < 3; x += 1) {
-                /*
-                cell = {x: x, z: z};
-                cell.isoX = (x + z);
-                cell.isoY = (x + 1 - z);
-                tiles.push(cell);
-                /*/
                 var tile = new Tile();
                 tile.point().set(x, 0, z);
                 tiles.facility.push(tile);
-                //*/
             }
         }
 
@@ -64,12 +59,15 @@ angular.module("city").service("city.service.tiles", [
             // Toggle tiles != current level - new facility mode
             // Toggle tiles above current level - full view mode
         };
-        this.get = function () {
-            update();
-            return $filter('orderBy')(tiles.facility, [
+        this.visible = function () {
+            return $filter('orderBy')(tiles.visible, [
                 "+y()",
                 function (tile) {return tile.point().x() - tile.point().z(); }
             ]);
+        };
+        this.update = update;
+        this.onChange = function (cb) {
+            updateCallbacks.push(cb);
         };
     }
 ]);
