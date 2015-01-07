@@ -11,6 +11,7 @@ angular.module("application").service("application.service.primary-navigation", 
     this.list = [];
 
     setNavItem("overview", "Overview");
+    setNavItem("recruitment", "Recruitment");
 
     this.setActive = function (name) {
         angular.forEach(scope.list, function (item) {

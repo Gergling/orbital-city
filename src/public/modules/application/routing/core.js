@@ -3,16 +3,17 @@ angular.module("application")
     .config(['$routeProvider', function ($routeProvider) {
         "use strict";
 
-        var Route = function (name, label, module) {
+        var Route = function (name, label, partial) {
                 this.name = name;
-                this.label = label;
-                this.partial = 'modules/' + module + '/partial/index.html';
+                //this.label = label;
+                this.partial = 'modules/application/partial/' + partial + '.html';
             },
 
             containerPartial = 'modules/application/partial/container.html',
             routes = {
                 '/': { redirectTo: '/overview/' },
-                '/overview/': new Route("overview", "Overview", 'application')
+                '/overview/': new Route("overview", "Overview", 'index'),
+                '/recruitment/': new Route("recruitment", "Recruitment", 'recruitment')
             };
 
         angular.forEach(routes, function (obj, route) {
