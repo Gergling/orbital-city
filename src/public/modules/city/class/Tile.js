@@ -1,23 +1,25 @@
 angular.module("city").factory("city.class.Tile", [
 
-    // Resources
+    "city.class.Point",
+    "city.service.view",
 
-    function () {
+    function (Point, view) {
         "use strict";
 
-        return function (x, y, z) {
-            var width = 100,
-                height = 50,
-                left = (x + z) * width / 2,
-                top = (x + 1 - z - y) * height / 2;
+        // A Tile expresses a Point.
+        return function () {
+            var point = new Point(),
+                size = new Point(100, 50),
+                show = true;
 
-            this.left = function () {return left; };
-            this.top = function () {return top; };
-            this.width = function () {return width; };
-            this.height = function () {return height; };
-            this.x = function () {return x; };
-            this.y = function () {return y; };
-            this.z = function () {return z; };
+            this.left = function () {return (point.x() + point.z() - view.camera().x() - view.camera().z()) * size.x() / 2; };
+            this.top = function () {return (point.x() + 1 - point.z() - point.y()) * size.y() / 2; };
+            this.size = function () {return size; };
+            this.point = function () {return point; };
+            this.show = function (value) {
+                if (value === false || value) {show = value; }
+                return show;
+            };
         };
     }
 ]);
