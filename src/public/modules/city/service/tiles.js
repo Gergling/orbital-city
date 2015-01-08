@@ -7,17 +7,13 @@ angular.module("city").service("city.service.tiles", [
     function ($filter, Tile, view) {
         "use strict";
 
-        // Todo: Manage tiles.
-        // When tiles are added, they should be sorted by y, then by x-z.
-        // May be best done with $filter.
         var tiles = {
                 facility: [ ], // All tiles with facilities
                 construction: [ ], // All tiles eligible for new construction
                 visible: [ ] // All tiles printed to the html
             },
-            x, y, z, row, cell,
-            camera = new Tile(),
             constructionMode = false,
+            updateCallbacks = [ ],
             update = function () {
                 if (constructionMode) {
                     // Algorithm for generating construction tiles
@@ -28,26 +24,28 @@ angular.module("city").service("city.service.tiles", [
                 tiles.visible = $filter('filter')(tiles.facility, function (tile) {
                     var isVisible = true;
                     if (
-                        tile.left() > view.size().x() ||
-                        tile.left() + tile.size().x() < 0 ||
-                        tile.top() > view.size().y() ||
-                        tile.top() + tile.size().y() < 0
+                        tile.left() + tile.size().x() > view.size().x()
+                            || tile.left() < 0
+                            || tile.top() + tile.size().y() > view.size().y()
+                            || tile.top() < 0
                     ) {
                         isVisible = false;
                     }
                     return isVisible;
                 });
                 updateCallbacks.forEach(function (fnc) {fnc(); });
-            },
-            updateCallbacks = [ ];
+            };
 
-        for (z = 0; z < 3; z += 1) {
-            for (x = 0; x < 3; x += 1) {
-                var tile = new Tile();
-                tile.point().set(x, 0, z);
-                tiles.facility.push(tile);
+        (function () {
+            var x, z, tile;
+            for (z = 0; z < 3; z += 1) {
+                for (x = 0; x < 3; x += 1) {
+                    tile = new Tile();
+                    tile.point().set(x, 0, z);
+                    tiles.facility.push(tile);
+                }
             }
-        }
+        }());
 
         this.gridToggle = function () {
             // This function needs to run the update and set all the construction tiles to 'show'.
@@ -68,6 +66,7 @@ angular.module("city").service("city.service.tiles", [
         this.update = update;
         this.onChange = function (cb) {
             updateCallbacks.push(cb);
+            update();
         };
     }
 ]);
