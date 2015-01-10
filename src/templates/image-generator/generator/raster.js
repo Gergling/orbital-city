@@ -23,11 +23,11 @@ module.exports = function (png) {
         fnc = fnc || function () {return true; };
         fromX = fromX || 0;
         fromY = fromY || 0;
-        toX = toX || png.width;
-        toY = toY || png.height;
+        toX = toX === undefined ? png.width - 1 : toX;
+        toY = toY === undefined ? png.height - 1 : toY;
 
-        for (y = fromY; y < toY; y += 1) {
-            for (x = fromX; x < toX; x += 1) {
+        for (y = fromY; y <= toY; y += 1) {
+            for (x = fromX; x <= toX; x += 1) {
                 //channel = (png.width * y + x) * 4;
                 channel = this.channel(x, y);
 
