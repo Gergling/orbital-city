@@ -2,7 +2,8 @@ var Pixel = function (red, green, blue, alpha) {
     "use strict";
 
     var maths = require("./maths"),
-        channels = ["red", "green", "blue", "alpha"];
+        channels = ["red", "green", "blue", "alpha"],
+        scope = this;
 
     this.red = red || 1;
     this.green = green || 1;
@@ -48,6 +49,11 @@ var Pixel = function (red, green, blue, alpha) {
     };
     this.copy = function () {
         return new Pixel(this.red, this.green, this.blue, this.alpha);
+    };
+    this.set = function (pixel) {
+        channels.forEach(function (channel) {
+            scope[channel] = pixel[channel];
+        });
     };
 };
 
