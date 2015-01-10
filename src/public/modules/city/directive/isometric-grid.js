@@ -1,6 +1,8 @@
 angular.module("city").directive("cityIsometricGrid", [
 
     function () {
+        "use strict";
+
         return {
             scope: {cellWidth: "@"},
             templateUrl: 'modules/city/partial/directive-isometric-grid.html',
