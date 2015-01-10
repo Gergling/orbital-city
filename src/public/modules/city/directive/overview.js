@@ -11,18 +11,14 @@ angular.module("city").directive("cityOverview", function () {
             "city.service.view",
 
             function ($scope, tiles, view) {
-                var update = function () {
-                    tiles.update();
-                    
-                };
                 $scope.gridToggle = tiles.gridToggle;
                 $scope.left = function () {
                     view.camera().x(view.camera().x() - 1);
-                    update();
+                    tiles.update();
                 };
                 $scope.right = function () {
                     view.camera().x(view.camera().x() + 1);
-                    update();
+                    tiles.update();
                 };
             }
         ]
