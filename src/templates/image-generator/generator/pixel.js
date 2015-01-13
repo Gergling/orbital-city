@@ -55,6 +55,16 @@ var Pixel = function (red, green, blue, alpha) {
             scope[channel] = pixel[channel];
         });
     };
+
+    this.grey = function (value) {
+        channels.forEach(function (channel) {
+            if (channel !== "alpha") {
+                scope[channel] = value;
+            }
+        });
+        //this.set(value, value, value);
+        return this;
+    };
 };
 
 module.exports = Pixel;
