@@ -33,8 +33,11 @@ module.exports = function (png, generator) {
                 }
             }
         },
-        cutTopCorner = function (x, y) {
-            var margin = computerBank.top.height - computerBank.top.center.height;
+        drawComputerBanks = function (x, y) {
+            var margin = computerBank.top.height - computerBank.top.center.height,
+                deviation = {
+                    center: Math.abs(x - (png.width / 2))
+                };
 
             if (y > -margin) {
                 generator.raster.forEach(function (pixel) {
@@ -56,10 +59,13 @@ module.exports = function (png, generator) {
 
             // Black outline
             generator.raster.pixel(x, y, colours.black);
-
             if (y < 0) {
                 generator.raster.pixel(x, 0, colours.black);
             }
+
+            // End panels
+            //generator.raster.pixel(x, y, colours.black);
+            // Todo: Line function?
         };
 
     generator.raster.forEach(function (pixel) {
@@ -80,11 +86,30 @@ module.exports = function (png, generator) {
     for (i = 0; i < png.width / 2; i += 1) {
         x = i;
         y = (png.height / 2 - Math.floor(i / 2)) - 10;
-        cutTopCorner(x, y);
+        drawComputerBanks(x, y);
 
         x = i + Math.floor(png.width / 2);
         y = Math.floor(i / 2) - 10;
-        cutTopCorner(x, y);
+        drawComputerBanks(x, y);
+    }
 
+    // Left end-panel
+    generator.raster.line(function (pixel, x, y) {
+        pixel.set(computerBank.panels.right.colour);
+    }, 2, 16, 12, 21);
+    for (i = 0; i < computerBank.panels.height - computerBank.top.center.height - 1; i += 1) {
+        generator.raster.line(function (pixel, x, y) {
+            pixel.set(computerBank.panels.right.colour);
+        }, 0, i + 16, 12, i + 22);
+    }
+
+    // Right end-panel
+    generator.raster.line(function (pixel, x, y) {
+        //pixel.set(computerBank.panels.left.colour);
+    }, png.width - 1, 16, png.width - 12, 22);
+    for (i = 0; i < computerBank.panels.height - computerBank.top.center.height - 1; i += 1) {
+        generator.raster.line(function (pixel, x, y) {
+            pixel.set(computerBank.panels.left.colour);
+        }, png.width - 1, i + 16, png.width - 11, i + 20);
     }
 };
