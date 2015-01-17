@@ -90,7 +90,37 @@ module.exports = function (png) {
             this.pixel(dx, dy, pixel);
         }
         return this;
+    /*this.processPixel = function (dx, dy, fnc, args) {
+        var pixel = scope.pixel(dx, dy);
+        fnc(pixel, dx, dy, args);
+        scope.pixel(dx, dy, pixel);
     };
+    this.circle = function (x0, y0, radius, fnc) {
+        var x = radius,
+            y = 0,
+            radiusError = 1-x,
+            DrawPixel = this.processPixel;
+
+        while(x >= y)
+        {
+            DrawPixel(x + x0, y + y0, fnc);
+            DrawPixel(y + x0, x + y0, fnc);
+            DrawPixel(-x + x0, y + y0, fnc);
+            DrawPixel(-y + x0, x + y0, fnc);
+            DrawPixel(-x + x0, -y + y0, fnc);
+            DrawPixel(-y + x0, -x + y0, fnc);
+            DrawPixel(x + x0, -y + y0, fnc);
+            DrawPixel(y + x0, -x + y0, fnc);
+            y++;
+            if (radiusError<0) {
+                radiusError += 2 * y + 1;
+            } else {
+                x--;
+                radiusError += 2 * (y - x + 1);
+            }
+        }
+
+    };*/
 
     this.gradient = function (start, end, fromX, fromY, toX, toY) {
         var from, to, current;
