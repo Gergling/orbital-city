@@ -62,8 +62,14 @@ var Pixel = function (red, green, blue, alpha) {
                 scope[channel] = value;
             }
         });
-        //this.set(value, value, value);
         return this;
+    };
+    this.random = function () {
+        channels.forEach(function (channel) {
+            if (channel !== "alpha") {
+                scope[channel] = Math.floor(Math.random() * 256);
+            }
+        });
     };
 };
 

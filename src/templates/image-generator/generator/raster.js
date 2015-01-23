@@ -3,9 +3,11 @@ module.exports = function (png) {
 
     var extend = require("deep-extend"),
         maths = require("./maths"),
-        Pixel = require("./pixel");
+        Pixel = require("./pixel"),
+        scope = this;
 
     this.pixel = function (x, y, pixel) {
+        // Todo: Throw exceptions when the x or y are out of bounds
         if (pixel) {
             pixel.toPNG(png.data, this.channel(x, y));
         } else {
@@ -18,6 +20,8 @@ module.exports = function (png) {
         return (png.width * y + x) * 4;
     };
 
+    // Todo: Apply a system of filter flag functions which indicate whether the
+        // current pixel rests on the edge of a circle or such.
     this.forEach = function (fnc, fromX, fromY, toX, toY) {
         var x, y, channel, pixel;
 
@@ -64,42 +68,69 @@ module.exports = function (png) {
         }
         return distance;
     };
-    this.circle = function (x, y, radius, fnc, options) {
+    /*this.circle = function (x, y, radius, fnc, options) {
         var dx, dy, i, angle, pixel;
 
         options = extend({
             radial: {
                 start: 0,
                 arc: 2 * Math.PI
+            },
+            scale: {
+                x: 1,
+                y: 1
             }
         }, options || { });
-        //maths.pythagoras(
-        //pyth = x^2 + y^2 = r^2
-        //for (dx = -radius; dx < radius; dx += 1) {
-            //dy = Math.sqrt(Math.pow(r, 2) - Math.pow(dx, 2));
-            
-        //}
-        // Find out how many pixels in the circumference, then loop those.
-            // It's going to be 2 * pi * radius
+
         for (i = 0; i < options.radial.arc * radius; i+= 1) {
             angle = i / radius;
-            dx = radius * Math.sin(angle + options.radial.start);
-            dy = radius * Math.cos(angle + options.radial.start);
+            dx = radius * Math.sin(angle - options.radial.start) * options.scale.x;
+            dy = radius * Math.cos(angle - options.radial.start) * options.scale.y;
+            //dx = dx * (dx + dy) / radius;
+            //dy = dy * (dx + dy) / radius;
+            dx = Math.round(dx) + x;
+            dy = Math.round(dy) + y;
             pixel = this.pixel(dx, dy);
             fnc(pixel, dx, dy, angle, i);
             this.pixel(dx, dy, pixel);
         }
         return this;
-    /*this.processPixel = function (dx, dy, fnc, args) {
-        var pixel = scope.pixel(dx, dy);
-        fnc(pixel, dx, dy, args);
-        scope.pixel(dx, dy, pixel);
-    };
-    this.circle = function (x0, y0, radius, fnc) {
+    };*/
+    this.circle = function (x0, y0, radius, fnc, options) {
         var x = radius,
             y = 0,
-            radiusError = 1-x,
-            DrawPixel = this.processPixel;
+            radiusError = 1 - x,
+            minmax = {min: 1000, max: 0},
+            options = extend({
+                radial: {
+                    start: 0,
+                    arc: 2 * Math.PI
+                },
+                scale: {
+                    x: 1,
+                    y: 1
+                }
+            }, options || { }),
+            twoRSquared = 2 * radius * radius,
+            DrawPixel = function (px, py, fnc, args) {
+                var pixel,
+                    dx = px - x0,
+                    dy = py - y0,
+                    angle = Math.acos(dx / radius) + (Math.PI / 2) - options.radial.start;
+                    //angle = Math.acos((twoRSquared - Math.pow(maths.pythagoras(dx, dy), 2)) / twoRSquared);
+
+                //if (dy < 0) {angle = Math.PI - angle; }
+                if (angle < 0) {angle += Math.PI * 2; }
+                //console.log(angle, dx, dy, options.radial);
+                minmax.min = Math.min(minmax.min, angle);
+                minmax.max = Math.max(minmax.max, angle);
+                //options.radial.start
+                if (angle >= options.radial.start && angle <= options.radial.arc + options.radial.start) {
+                    pixel = scope.pixel(px, py);
+                    fnc(pixel, px, py, angle, args);
+                    scope.pixel(px, py, pixel);
+                }
+            };
 
         while(x >= y)
         {
@@ -119,8 +150,9 @@ module.exports = function (png) {
                 radiusError += 2 * (y - x + 1);
             }
         }
+        console.log(minmax);
 
-    };*/
+    };
 
     this.gradient = function (start, end, fromX, fromY, toX, toY) {
         var from, to, current;

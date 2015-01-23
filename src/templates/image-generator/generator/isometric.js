@@ -69,65 +69,44 @@ module.exports = function (png, raster) {
             // co-ordinates generated.
 
         var flags = { };
-        args.circle = extend({
-            scale: {
-                x: 2 / 3
-            }
-        }, args.circle || { });
 
-        return raster.circle(x0, y0, radius, function (p, x, y, angle, i) {
-            var lineFnc = function (pixel, x, y, i) {
-                    fnc(p, x, y, i);
-                    pixel.set(p.copy());
+        args = extend({
+            circle: {
+                scale: {
+                    x: 2 / 3
+                }
+            }
+        }, args || { });
+
+        raster.circle(x0, y0, radius, function (p, x, y, angle, i) {
+            var // Todo: Need to check whether the pixel is to the left
+                // or to the right of x0. If it's to the left in the 
+                // first run, display it. If it's to the right, display
+                // in the second run.
+
+                left = true,
+                lineFnc = function (pixel, lx, ly, j) {
+                    if (
+                        (left && x < x0)
+                        || (!left && x > x0)
+                    ) {
+                        //pixel.set(p.copy());
+                        //fnc(pixel, x, y, lx, ly, i, j, flags);
+                    }
                 },
                 //gradient = (direction === "ascending" ? -1 : 1),
-                gradient = 1,
+                gradient = 1, // Decides expression for direction of cylinder.
                 x2 = x + (length * gradient),
                 y2 = y - Math.floor(length / 2);
 
-            p.random();
+            /*p.random();
             raster.line(lineFnc, x, y, x2, y2);
             raster.line(lineFnc, x, y + 1, x2, y2 + 1);
+            p.random();
+            left = !left;
+            raster.line(lineFnc, x, y, x2, y2);
+            raster.line(lineFnc, x, y + 1, x2, y2 + 1);*/
+            fnc(p, x, y);
         }, args.circle);
-
-        return this.ellipse(x0, y0, radius, function (p, x, y, direction, flags) {
-            var lineFnc = function (pixel, x, y, i) {
-                    fnc(p, x, y, direction, i);
-                    if (flags.front()) {
-                        pixel.set(p.copy());
-                    }
-                },
-                gradient = (direction === "ascending" ? -1 : 1),
-                x2 = x + (length * gradient),
-                y2 = y - Math.floor(length / 2);
-
-            p.random();
-            raster.line(lineFnc, x, y, x2, y2);
-            raster.line(lineFnc, x, y + 1, x2, y2 + 1);
-        });
     };
-    /*this.cylinder = function (x0, y0, radius, length, fnc) {
-        // Extend lines along the length of the cylinder.
-        // Runs a circle routine, each pixel has gradient/pythagoran 
-            // co-ordinates generated.
-
-        var flags = { };
-
-        return this.ellipse(x0, y0, radius, function (p, x, y, direction, flags) {
-            //console.log(direction);
-            var lineFnc = function (pixel, x, y, i) {
-                    fnc(p, x, y, direction, i);
-                    if (flags.front()) {
-                        pixel.set(p.copy());
-                    }
-                },
-                gradient = (direction === "ascending" ? -1 : 1),
-                x2 = x + (length * gradient),
-                y2 = y - Math.floor(length / 2);
-
-            p.random();
-            raster.line(lineFnc, x, y, x2, y2);
-            raster.line(lineFnc, x, y + 1, x2, y2 + 1);
-        });
-    };*/
 };
