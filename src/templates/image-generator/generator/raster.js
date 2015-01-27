@@ -100,7 +100,7 @@ module.exports = function (png) {
         var x = radius,
             y = 0,
             radiusError = 1 - x,
-            minmax = {min: 1000, max: 0},
+            minmax = {min: 1000, max: 0, accepted: {min: 1000, max: 0}},
             options = extend({
                 radial: {
                     start: 0,
@@ -116,16 +116,20 @@ module.exports = function (png) {
                 var pixel,
                     dx = px - x0,
                     dy = py - y0,
-                    angle = Math.acos(dx / radius) + (Math.PI / 2) - options.radial.start;
+                    angle = Math.asin(dx / radius);// + (Math.PI / 2);
                     //angle = Math.acos((twoRSquared - Math.pow(maths.pythagoras(dx, dy), 2)) / twoRSquared);
 
                 //if (dy < 0) {angle = Math.PI - angle; }
+                if (dx < 0) {angle = Math.PI - angle; }
+                angle += options.radial.start;
                 if (angle < 0) {angle += Math.PI * 2; }
                 //console.log(angle, dx, dy, options.radial);
-                minmax.min = Math.min(minmax.min, angle);
-                minmax.max = Math.max(minmax.max, angle);
+                minmax.min = Math.min(minmax.min, Math.round(angle * 100) / 100);
+                minmax.max = Math.max(minmax.max, Math.round(angle * 100) / 100);
                 //options.radial.start
                 if (angle >= options.radial.start && angle <= options.radial.arc + options.radial.start) {
+                    minmax.accepted.min = Math.min(minmax.accepted.min, Math.round(angle * 100) / 100);
+                    minmax.accepted.max = Math.max(minmax.accepted.max, Math.round(angle * 100) / 100);
                     pixel = scope.pixel(px, py);
                     fnc(pixel, px, py, angle, args);
                     scope.pixel(px, py, pixel);
@@ -151,6 +155,7 @@ module.exports = function (png) {
             }
         }
         console.log(minmax);
+        console.log(options.radial);
 
     };
 

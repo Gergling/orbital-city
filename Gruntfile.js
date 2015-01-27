@@ -319,7 +319,7 @@ module.exports = function (grunt) {
                 ],
                 tasks: [
                     'execute:images',
-                    'jslint:server'
+                    //'jslint:server'
                 ]
             }
         },

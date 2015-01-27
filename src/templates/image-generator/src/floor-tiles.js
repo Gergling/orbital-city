@@ -19,7 +19,7 @@ module.exports = function (png, generator) {
 
     totalTilesHeight = png.height / tileHeight;
 
-    // Transparent background
+    // Background
     generator.raster.forEach(function (pixel, x, y) {
         pixel.set(colours.main);
         //pixel.alpha = 0;

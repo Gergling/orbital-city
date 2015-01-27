@@ -71,6 +71,7 @@ var Pixel = function (red, green, blue, alpha) {
             }
         });
     };
+    this.channels = function () {return channels; };
 };
 
 module.exports = Pixel;
