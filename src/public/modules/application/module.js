@@ -1,7 +1,9 @@
 angular.module("application", [
+    //"ngAnimate",
     "ngRoute",
 
     "restangular",
 
-    "city"
+    "city",
+    "technopedia"
 ]);

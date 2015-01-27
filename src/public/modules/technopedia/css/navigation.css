@@ -1,0 +1,23 @@
+[technopedia-navigation] {
+	
+}
+
+[technopedia-navigation] ul {
+	background: #444;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+[technopedia-navigation] ul li {
+	text-align: center;
+	width: 1%;
+	display: table-cell;
+	overflow: hidden;
+	padding: 0 20px;
+}
+
+[technopedia-navigation] ul li a {
+	color: #2df;
+	display: block;
+}
