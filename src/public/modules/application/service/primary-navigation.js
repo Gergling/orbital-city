@@ -1,26 +1,32 @@
-angular.module("application").service("application.service.primary-navigation", function () {
-    "use strict";
+angular.module("application").service("application.service.primary-navigation", [
 
-    var scope = this, setNavItem = function (name, label) {
-        var item = {
-            label: label,
-            name: name
+    "application.constant.routes",
+
+    function (routes) {
+        "use strict";
+
+        var scope = this, setNavItem = function (name, label) {
+            var item = {
+                label: label,
+                name: name
+            };
+            scope.list.push(item);
         };
-        scope.list.push(item);
-    };
-    this.list = [];
+        this.list = [];
 
-    setNavItem("overview", "Overview");
-    setNavItem("recruitment", "Recruitment");
-
-    this.setActive = function (name) {
-        angular.forEach(scope.list, function (item) {
-            if (item.name === name) {
-                item.active = true;
-                scope.active = item;
-            } else {
-                item.active = false;
-            }
+        routes.forEach(function (route) {
+            setNavItem(route.name, route.label);
         });
-    };
-});
+
+        this.setActive = function (name) {
+            angular.forEach(scope.list, function (item) {
+                if (item.name === name) {
+                    item.active = true;
+                    scope.active = item;
+                } else {
+                    item.active = false;
+                }
+            });
+        };
+    }
+]);

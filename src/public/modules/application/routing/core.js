@@ -1,24 +1,13 @@
 angular.module("application")
 
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider', 'application.constant.routes', function ($routeProvider, routes) {
         "use strict";
 
-        var Route = function (name, label, partial) {
-                this.name = name;
-                //this.label = label;
-                this.partial = 'modules/application/partial/' + partial + '.html';
-            },
+        var containerPartial = 'modules/application/partial/container.html';
 
-            containerPartial = 'modules/application/partial/container.html',
-            routes = {
-                '/': { redirectTo: '/overview/' },
-                '/overview/': new Route("overview", "Overview", 'index'),
-                '/recruitment/': new Route("recruitment", "Recruitment", 'recruitment')
-            };
-
-        angular.forEach(routes, function (obj, route) {
-            obj.templateUrl = containerPartial;
-            $routeProvider.when(route, obj);
+        routes.forEach(function (route) {
+            route.templateUrl = containerPartial;
+            $routeProvider.when(route.url, route);
         });
 
         $routeProvider.otherwise({templateUrl: containerPartial, partial: 'modules/application/partial/404.html'});
