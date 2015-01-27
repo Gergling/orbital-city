@@ -1,0 +1,11 @@
+<div data-ng-animate="'animate'"
+    class="isometric-square"
+    data-ng-show="cityTile.show()"
+    style="
+        left: {{cityTile.left()}}px;
+        top: {{cityTile.top()}}px;
+        width: {{cityTile.size().x()}}px;
+        height: {{cityTile.size().y()}}px;
+    ">
+        <img width="{{cityTile.size().x()}}" data-ng-src="{{image}}" />
+</div>

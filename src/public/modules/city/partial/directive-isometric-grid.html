@@ -1,13 +1,3 @@
 <div class="isometric-grid" style="top: {{cellHeight}}px;">
-    <div data-ng-repeat="tile in tiles"
-        class="isometric-square"
-        data-ng-show="tile.show()"
-        style="
-            left: {{tile.left()}}px;
-            top: {{tile.top()}}px;
-            width: {{tile.size().x()}}px;
-            height: {{tile.size().y()}}px;
-        ">
-        {{tile.point().x()}}, {{tile.point().y()}}, {{tile.point().z()}}
-    </div>
+    <div data-ng-repeat="tile in tiles" city-tile="tile"></div>
 </div>

@@ -34,12 +34,12 @@ module.exports = function (png, generator) {
         p.blue = 0;
     });
     generator.isometric.cylinder(20, 70, 15, 20, function (p, x, y) {
-        // Purple - full circle
+        // Purple - quarter circle
         p.green = 0;
     }, {
         circle: {
             radial: {
-                start: Math.PI
+                arc: Math.PI / 2
             }
         }
     });
