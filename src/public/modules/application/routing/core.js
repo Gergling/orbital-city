@@ -1,30 +1,27 @@
 angular.module("application")
 
-    .config(['$routeProvider', 'application.constant.routes', function ($routeProvider, routes) {
+    .config(['$routeProvider', 'application.constant.routes', function ($routeProvider, root) {
         "use strict";
 
-        var containerPartial = 'modules/application/partial/container.html';
+        root.routes($routeProvider);
 
-        routes.forEach(function (route) {
-            route.templateUrl = containerPartial;
-            $routeProvider.when(route.url, route);
-        });
-
-        $routeProvider.otherwise({templateUrl: containerPartial, partial: 'modules/application/partial/404.html'});
+        $routeProvider.otherwise({templateUrl: root.templateUrl, partial: 'modules/application/partial/404.html'});
     }])
 
     .controller("application.controller.index", [
 
         "$rootScope",
-        "application.service.primary-navigation",
+        "application.constant.routes",
+        "$route",
 
-        function ($scope, navigation) {
+        function ($scope, root, $route) {
             "use strict";
 
-            $scope.navigation = navigation;
+            $scope.navigation = root.children();
             $scope.$on("$routeChangeStart", function (event, next) {
-                $scope.routeTemplateUrl = next.partial;
-                navigation.setActive(next.name);
+                $scope.routeTemplateUrl = next.partial();
+                next.active(true);
+                root.children(next.name());
             });
         }
     ]);
