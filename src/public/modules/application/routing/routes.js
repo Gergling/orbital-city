@@ -8,8 +8,22 @@ angular.module("application").constant("application.constant.routes", (function 
                 label = '',
                 partial = '',
                 active = false,
+                level = 0,
                 parent;
 
+            this.level = function (value) {return level; };
+            this.ancestor = function (value) {
+                var ancestor;
+                console.log(url, level, value);
+                if (value === level) {
+                    ancestor = this;
+                } else if (value < level) {
+                    ancestor = parent.ancestor(value);
+                } else {
+                    throw new Error("application.constant.routes.Route#ancestor(): Route level '" + level + "' is greater than requested level '" + value + "' and therefore unreachable.");
+                }
+                return ancestor;
+            };
             this.name = function (value) {
                 if (value) {name = value; }
                 return name;
@@ -29,7 +43,9 @@ angular.module("application").constant("application.constant.routes", (function 
                 return url;
             };
             this.routes = function ($routeProvider) {
-                $routeProvider.when(this.url(), this);
+                if (level > 0) {
+                    $routeProvider.when(this.url(), this);
+                }
                 this.children().forEach(function (route) {
                     route.routes($routeProvider);
                 });
@@ -42,6 +58,7 @@ angular.module("application").constant("application.constant.routes", (function 
                 route.partial(partial);
                 route.url(name);
                 children.push(route);
+                console.log(name, route.level());
                 return route;
             };
             this.children = function (filter) {
@@ -60,6 +77,7 @@ angular.module("application").constant("application.constant.routes", (function 
                 if (route) {
                     if (!(route instanceof Route)) {throw new Error("application.constant.routes.Route#parent: supplied route not of type Route.");}
                     parent = route;
+                    level = parent.level() + 1;
                 }
                 return parent;
             };
@@ -84,7 +102,7 @@ angular.module("application").constant("application.constant.routes", (function 
         },
         root = new Route();
 
-    root.add('overview', 'Overview', 'modules/application/partial/index.html').url('/');
+    root.add('overview', 'Overview', 'modules/application/partial/index.html');
     root.add('recruitment', 'Recruitment', 'modules/application/partial/recruitment.html');
     root.add('technopedia', 'Technopedia', 'modules/technopedia/partial/index.html').run(function (route) {
         route.add('facilities', 'Facilities', 'modules/technopedia/partial/facilities.html');
