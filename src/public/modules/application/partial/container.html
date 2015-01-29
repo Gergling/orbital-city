@@ -1,10 +1,10 @@
 <div id="all">
     <div id="nav">
         <ul>
-            <li data-ng-repeat="item in navigation.list" data-ng-class="{active: item.active}">
+            <li data-ng-repeat="item in navigation" data-ng-class="{active: item.active()}">
                 <div class="stalk"></div>
                 <div component-bracket>
-                    <a href="#/{{item.name}}/">{{item.label}}</a>
+                    <a href="#{{item.url()}}">{{item.label()}}</a>
                 </div>
             </li>
         </ul>
