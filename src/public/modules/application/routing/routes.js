@@ -14,7 +14,6 @@ angular.module("application").constant("application.constant.routes", (function 
             this.level = function (value) {return level; };
             this.ancestor = function (value) {
                 var ancestor;
-                console.log(url, level, value);
                 if (value === level) {
                     ancestor = this;
                 } else if (value < level) {
@@ -58,7 +57,6 @@ angular.module("application").constant("application.constant.routes", (function 
                 route.partial(partial);
                 route.url(name);
                 children.push(route);
-                console.log(name, route.level());
                 return route;
             };
             this.children = function (filter) {
@@ -82,12 +80,16 @@ angular.module("application").constant("application.constant.routes", (function 
                 return parent;
             };
 
-            this.deactivate = function () {active = false; };
+            this.deactivate = function () {
+                active = false;
+                this.children().forEach(function (child) {
+                    child.deactivate();
+                });
+                return this;
+            };
             this.active = function (value) {
-                if (value || value === false) {
-                    this.parent().children().forEach(function (route) {
-                        route.deactivate();
-                    });
+                if ((value || value === false) && parent) {
+                    this.parent().active(value);
                     active = value;
                 }
                 return active;

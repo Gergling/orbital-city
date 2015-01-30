@@ -26,17 +26,12 @@ angular.module("application")
 
             $scope.navigation = root.children();
             $scope.$on("$routeChangeStart", function (event, next) {
+                root.deactivate();
                 if (next.ancestor) {
                     var primaryRoute = next.ancestor(1);
                     $scope.routeTemplateUrl = primaryRoute.partial();
-                    primaryRoute.active(true);
-                } else {
-                    root.children().forEach(function (route) {
-                        route.active(false);
-                    });
+                    next.active(true);
                 }
-                //console.log(next.name());
-                //root.children(next.name());
             });
         }
     ]);

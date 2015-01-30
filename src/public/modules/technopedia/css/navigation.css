@@ -21,3 +21,15 @@
 	color: #2df;
 	display: block;
 }
+[technopedia-navigation] ul li.active a {
+	color: white;
+}
+
+[technopedia-navigation] ul li .stalk {
+	border-width: 0;
+	height: 20px;
+	margin: auto;
+}
+[technopedia-navigation] ul li.active .stalk {
+	border-width: 0 2px;
+}
