@@ -94,19 +94,30 @@ angular.module("application").constant("application.constant.routes", (function 
                 }
                 return active;
             };
+            this.activeDescendant = function () {
+                var descendant = this;
+                this.children().forEach(function (child) {
+                    if (child.active()) {
+                        descendant = child.activeDescendant();
+                    }
+                });
+                return descendant;
+            };
+            // Activate, deactivate, get active node, get whether active
+            // Run down the line of active children until the last one is reached.
             this.run = function (fnc) {
                 fnc(this);
                 return this;
             };
 
             this.templateUrl = 'modules/application/partial/container.html';
-            this.$filter = function (value) {$filter = value; };
         },
         root = new Route();
 
     root.add('overview', 'Overview', 'modules/application/partial/index.html');
     root.add('recruitment', 'Recruitment', 'modules/application/partial/recruitment.html');
     root.add('technopedia', 'Technopedia', 'modules/technopedia/partial/index.html').run(function (route) {
+        route.redirectTo = route.url() + 'facilities/';
         route.add('facilities', 'Facilities', 'modules/technopedia/partial/facilities.html');
         route.add('stations', 'Stations', 'modules/technopedia/partial/stations.html');
         route.add('opportunities', 'Opportunities', 'modules/technopedia/partial/opportunities.html');
