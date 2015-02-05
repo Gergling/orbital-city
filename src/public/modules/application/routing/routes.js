@@ -116,6 +116,7 @@ angular.module("application").constant("application.constant.routes", (function 
 
     root.add('overview', 'Overview', 'modules/application/partial/index.html');
     root.add('recruitment', 'Recruitment', 'modules/application/partial/recruitment.html');
+    root.add('city', 'City', 'modules/city/partial/city.html');
     root.add('technopedia', 'Technopedia', 'modules/technopedia/partial/index.html').run(function (route) {
         route.redirectTo = route.url() + 'facilities/';
         route.add('facilities', 'Facilities', 'modules/technopedia/partial/facilities.html');
