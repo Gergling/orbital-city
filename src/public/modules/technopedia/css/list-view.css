@@ -1,0 +1,15 @@
+#technopedia-container .list,
+#technopedia-container .detail {
+	float: left;
+}
+#technopedia-container .list .list-item {
+	text-align: center;
+}
+#technopedia-container .detail-view .list-item {
+	float: initial;
+	width: 200px;
+}
+#technopedia-container .detail {
+	width: 530px;
+	margin-right: 0;
+}

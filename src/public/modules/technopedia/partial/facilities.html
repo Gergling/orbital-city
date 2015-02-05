@@ -1,1 +1,17 @@
-Facilities!
+<div data-ng-controller="technopedia.controller.facilities">
+    <div data-ng-class="{'detail-view': selected}" style="margin-top: 10px;">
+        <div class="list">
+            <div data-ng-repeat="facility in facilities" 
+                class="list-item pill"
+                data-ng-class="{active: facility === selected}"
+                data-ng-click="activate(facility);">
+                <span>{{facility.label}}</span>
+                <i class="bar"></i>
+            </div>
+        </div>
+        <div data-ng-show="selected" class="detail pill">
+            {{selected.description}}
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
