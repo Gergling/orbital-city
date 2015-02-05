@@ -108,9 +108,7 @@ module.exports = function (grunt) {
             module: {
                 src: paths.module,
                 directives: {
-                    unparam: true,
-                    maxlen: 80,
-                    predef: [ 'module', 'require', 'process', 'console' ]
+                    predef: [ 'module', 'require' ]
                 }
             },
             specs: {
