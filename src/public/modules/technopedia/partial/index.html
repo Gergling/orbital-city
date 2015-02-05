@@ -1,7 +1,14 @@
-<div data-ng-controller="technopedia.controller.index">
+<div id="technopedia-container" data-ng-controller="technopedia.controller.index">
     <div technopedia-navigation></div>
 
     <div component-bracket>
-        <div style="padding: 0 10px;" data-ng-include="technopediaPartial"></div>
+        <div style="padding: 0 10px;">
+            <div data-ng-include="technopediaPartial"></div>
+
+            <div>
+                All records and accounts are translated into <span style="color: #2df">Terran</span>,
+                based on your implant configuration.
+            </div>
+        </div>
     </div>
 </div>
