@@ -27,6 +27,7 @@
     "grunt-template": "^0.2.3",
     "grunt-template-jasmine-istanbul": "^0.3.0",
     "method-override": "~2.0.2",
+    "mongoose": "~3.8.0",
     "pngjs": "^0.4.0",
     "to-camel-case": "^0.2.1"
   }
