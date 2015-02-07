@@ -9,6 +9,11 @@
 	text-align: center;
 	background: url(../media/image/isometric-square-100x50-empty.png) no-repeat 100px 50px;
 }
+.isometric-grid .isometric-square img {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
 
 .animate-enter, 
 .animate-leave

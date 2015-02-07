@@ -12,7 +12,7 @@ angular.module("city").factory("city.class.Tile", [
                 size = new Point(100, 50),
                 show = true;
 
-            this.left = function () {return (point.x() + point.z() - view.camera().x() - view.camera().z()) * size.x() / 2; };
+            this.left = function () {return ((point.x() + point.z() - view.camera().z()) * size.x() / 2) + view.camera().x(); };
             this.top = function () {return (point.x() + 1 - point.z() - point.y()) * size.y() / 2; };
             this.size = function () {return size; };
             this.point = function () {return point; };
