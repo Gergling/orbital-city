@@ -7,10 +7,13 @@ module.exports = (function () {
     // Vendor Modules =================================================
     var express = require('express'),
         app = express(),
+        mongoose = require('mongoose'),
         bodyParser = require('body-parser'),
         methodOverride = require('method-override'),
 
         port = process.env.PORT || 8080; // set our port
+
+    mongoose.connect(require('./src/module/application/config/db').url);
 
     // get all data/stuff of the body (POST) parameters
     app.use(bodyParser.json()); // parse application/json
@@ -28,10 +31,15 @@ module.exports = (function () {
     // set the static files location /public/img will be /img for users
     app.use(express.static('./src/public'));
 
+    // Routing
+    require('./src/module/application/controller')(app);
+
     // start app ===============================================
     app.listen(port); // startup our app at http://localhost:8080
 
     console.log('Magic happens on port ' + port); // shoutout to the user
+
+    mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 
     return app;
 
