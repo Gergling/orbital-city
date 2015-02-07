@@ -3,13 +3,15 @@ module.exports = (function () {
 
     var facilities = [ ],
         addFacility = function (className) {
-            var FacilityClass = require('./' + className);
-            facilities.push(new FacilityClass());
+            var FacilityClass = require('../class/' + className),
+                facility = new FacilityClass();
+
+            facilities.push(facility.view());
         };
 
-    createFacility("environment", "Environment Generator")
-        .description("This generates an atmosphere and suitable temperature for the station.");
-    createFacility("residential", "Residential Sector");
-    createFacility("industrial", "Industrial Sector");
+    addFacility("Hull");
+    addFacility("Environmental");
+    //createFacility("residential", "Residential Sector");
+    //createFacility("industrial", "Industrial Sector");
     return facilities;
 }());
