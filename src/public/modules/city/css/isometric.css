@@ -3,6 +3,7 @@
 	width: 500px;
 	height: 250px;
 	margin: auto;
+	overflow: hidden;
 }
 .isometric-grid .isometric-square {
 	position: absolute;

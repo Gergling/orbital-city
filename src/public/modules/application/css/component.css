@@ -4,3 +4,38 @@
 	width: 0;
 	border-width: 0 2px;
 }
+.bar {
+	border-style: solid;
+	border-color: #2df;
+	height: 0;
+	border-width: 2px 0;
+}
+.pill {
+	border-style: solid;
+	border-color: #2df;
+	border-radius: 20px;
+	border-width: 4px;
+	padding: 5px 10px;
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+.overlay {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+*.unselectable {
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+
+   /*
+     Introduced in IE 10.
+     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+   */
+   -ms-user-select: none;
+   user-select: none;
+}
