@@ -26,6 +26,14 @@ angular.module("city").factory("city.class.Point", [
                 if (value === 0 || value) {z = value; }
                 return z;
             };
+            this.add = function (a, b, c) {
+                if (typeof a === "number") {
+                    // Assume this is a change to the co-ordinates.
+                    x += a || 0;
+                    y += b || 0;
+                    z += c || 0;
+                }
+            };
         };
     }
 ]);

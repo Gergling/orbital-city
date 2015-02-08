@@ -18,17 +18,20 @@ angular.module("city").directive("cityIsometricGrid", [
                             var enabled = false,
                                 offset = new Point();
 
-                            this.enabled = function (value) {
-                                if (value || value === false) {enabled = value; }
-                                return enabled;
+                            this.start = function ($event) {
+                                offset.x($event.clientX);
+                                offset.y($event.clientY);
+                                enabled = true;
                             };
-                            this.offset = function ($event) {
-                                if (this.enabled()) {
-                                    view.camera().x($event.clientX - offset.x());
-                                    view.camera().y($event.clientY - offset.y());
-                                } else {
+                            this.stop = function () {
+                                enabled = false;
+                            };
+                            this.update = function ($event) {
+                                if (enabled) {
+                                    view.camera().add($event.clientX - offset.x(), $event.clientY - offset.y());
                                     offset.x($event.clientX);
                                     offset.y($event.clientY);
+                                    tiles.update();
                                 }
                             };
                         },
@@ -37,21 +40,19 @@ angular.module("city").directive("cityIsometricGrid", [
                     $scope.cellHeight = $scope.cellWidth / 2;
                     tiles.onChange(function () {$scope.tiles = tiles.visible(); });
                     $scope.select = function (tile) {
-                        // Tile is selected, but what for?
+                        // Todo: Calculate exactly where the tile shape is, presumably using magic
                     };
                     $scope.mousedown = function ($event) {
-                        drag.offset($event);
-                        drag.enabled(true);
+                        drag.start($event);
                     };
-                    $scope.mouseup = function ($event) {
-                        drag.enabled(false);
+                    $scope.mouseup = function () {
+                        drag.stop();
                     };
                     $scope.mousemove = function ($event) {
-                        drag.offset($event);
+                        drag.update($event);
+                        // Partial highlight of hover tile.
+                        // Will need algorithm to detect correct tile.
                     };
-                    
-                    // Need a click/drag
-                    // This will provide an offset
                 }
             ]
         };

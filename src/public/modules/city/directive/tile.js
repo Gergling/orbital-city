@@ -1,8 +1,6 @@
 angular.module("city").directive("cityTile", [
 
-    "$timeout",
-
-    function ($timeout) {
+    function () {
         "use strict";
 
         return {
@@ -12,7 +10,7 @@ angular.module("city").directive("cityTile", [
                 return {
                     post: function ($scope, $element) {
                         var img = $element.find('img');
-                        img.bind('load', function (x) {
+                        img.bind('load', function () {
                             $element.find('.overlay').height(img.height());
                             $element.find('.overlay').css({top: 'initial'});
                         });
@@ -25,8 +23,6 @@ angular.module("city").directive("cityTile", [
                 "city.class.Tile",
 
                 function ($scope, Tile) {
-                    var tile = $scope.cityTile;
-
                     if (!($scope.cityTile instanceof Tile)) {throw new Error("cityTile directive: attribute value must be an instance of city.class.Tile."); }
 
                     $scope.image = "modules/city/media/image/isometric-tile/corridor-ascending-100x100.png";

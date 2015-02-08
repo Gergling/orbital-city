@@ -21,14 +21,16 @@ angular.module("city").service("city.service.tiles", [
                     tiles.construction = [ ];
                 }
                 // Update all visible tiles
+                console.log("Camera", view.size().x(), - view.camera().x());
                 tiles.visible = $filter('filter')(tiles.facility, function (tile) {
                     var isVisible = true;
                     if (
-                        tile.left() + tile.size().x() > view.size().x()
-                            || tile.left() < 0
-                            || tile.top() + tile.size().y() > view.size().y()
-                            || tile.top() < 0
+                        tile.left() > view.size().x()
+                            || tile.left() + tile.size().x() < 0
+                            || tile.top() > view.size().y() + 300
+                            || tile.top() + tile.size().y() < 0
                     ) {
+                        console.log("Tile", tile.left(), tile.size().x());
                         isVisible = false;
                     }
                     return isVisible;
