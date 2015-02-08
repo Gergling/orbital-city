@@ -3,7 +3,8 @@ module.exports = (function () {
 
     var Facility = require('./Facility'),
         Environmental = function () {
-            this.description("The Hull");
+            this.label("Environment Generator");
+            this.description("This generates an atmosphere and suitable temperature for the station.");
         };
 
     Environmental.prototype = new Facility();
