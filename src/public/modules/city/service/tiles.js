@@ -21,7 +21,6 @@ angular.module("city").service("city.service.tiles", [
                     tiles.construction = [ ];
                 }
                 // Update all visible tiles
-                console.log("Camera", view.size().x(), - view.camera().x());
                 tiles.visible = $filter('filter')(tiles.facility, function (tile) {
                     var isVisible = true;
                     if (
@@ -30,7 +29,6 @@ angular.module("city").service("city.service.tiles", [
                             || tile.top() > view.size().y() + 300
                             || tile.top() + tile.size().y() < 0
                     ) {
-                        console.log("Tile", tile.left(), tile.size().x());
                         isVisible = false;
                     }
                     return isVisible;
