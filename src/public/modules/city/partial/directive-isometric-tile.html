@@ -1,6 +1,7 @@
-<div data-ng-animate="'animate'"
+<div 
     class="isometric-square"
     data-ng-show="cityTile.show()"
+    data-ng-class="{hover: cityTile.hover()}"
     style="
         left: {{cityTile.left()}}px;
         top: {{cityTile.top()}}px;

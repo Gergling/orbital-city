@@ -9,11 +9,13 @@ angular.module("city").directive("cityIsometricGrid", [
             controller: [
 
                 "$scope",
+                "$element",
+                "$window",
                 "city.class.Point",
                 "city.service.tiles",
                 "city.service.view",
 
-                function ($scope, Point, tiles, view) {
+                function ($scope, $element, $window, Point, tiles, view) {
                     var Drag = function () {
                             var enabled = false,
                                 offset = new Point();
@@ -49,9 +51,18 @@ angular.module("city").directive("cityIsometricGrid", [
                         drag.stop();
                     };
                     $scope.mousemove = function ($event) {
+                        var el = $element.find('.isometric-grid'),
+                            x = $event.clientX - el.offset().left + $window.scrollX,
+                            y = $event.clientY - el.offset().top + $window.scrollY;
+
                         drag.update($event);
-                        // Partial highlight of hover tile.
-                        // Will need algorithm to detect correct tile.
+
+                        $scope.tiles.forEach(function (tile) {
+                            tile.hover(false);
+                            if (tile.boundsCheck(x - tile.left(), y - tile.top())) {
+                                tile.hover(true);
+                            }
+                        });
                     };
                 }
             ]
