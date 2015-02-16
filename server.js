@@ -11,6 +11,10 @@ module.exports = (function () {
         bodyParser = require('body-parser'),
         methodOverride = require('method-override'),
 
+        passport = require('passport'),
+
+        //expressSession = require('express-session'),
+
         port = process.env.PORT || 8080; // set our port
 
     mongoose.connect(require('./src/module/application/config/db').url);
@@ -30,6 +34,20 @@ module.exports = (function () {
 
     // set the static files location /public/img will be /img for users
     app.use(express.static('./src/public'));
+
+    // Configure passport
+    //app.use(expressSession({secret: 'mySecretKey'})); // When in use, this key should be in a separate file in application.
+    app.use(passport.initialize());
+    app.use(passport.session());
+    passport.serializeUser(function(user, done) {
+        done(null, user._id);
+    });
+
+    passport.deserializeUser(function(id, done) {
+        User.findById(id, function(err, user) {
+            done(err, user);
+        });
+    });
 
     // Routing
     require('./src/module/application/controller')(app);
