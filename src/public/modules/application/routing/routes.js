@@ -9,7 +9,8 @@ angular.module("application").constant("application.constant.routes", (function 
                 partial = '',
                 active = false,
                 level = 0,
-                parent;
+                parent,
+                visible = true;
 
             this.level = function (value) {return level; };
             this.ancestor = function (value) {
@@ -94,6 +95,12 @@ angular.module("application").constant("application.constant.routes", (function 
                 }
                 return active;
             };
+            this.visible = function (value) {
+                if (value || value === false) {
+                    visible = value;
+                }
+                return visible;
+            };
             this.activeDescendant = function () {
                 var descendant = this;
                 this.children().forEach(function (child) {
@@ -112,11 +119,34 @@ angular.module("application").constant("application.constant.routes", (function 
 
             this.templateUrl = 'modules/application/partial/container.html';
         },
-        root = new Route();
+        root = new Route(),
+        partial = function (module, name) {
+            return 'modules/' + module + '/partial/' + name + '.html';
+        };
 
-    root.add('overview', 'Overview', 'modules/application/partial/index.html');
-    root.add('recruitment', 'Recruitment', 'modules/application/partial/recruitment.html');
+    // Todo: New primary nav
+        // Login (Default - Guest)
+        // Register (Guest)
+        // City (Default - Auth)
+        // Technopedia
+    // Todo: New routes
+        /* 
+            /register/
+            /login/
+            /city/ - views list of player's cities
+            /city/:id/ - gameplay screen
+            /scenario/ - views list of scenarios
+            /scenario/:id/ - views specific scenario
+        */
+        // Registration page: needs easy access for the non-authenticated.
+    root.add('login', 'Login', partial('auth', 'login')); // Control visibility from an auth module service hook.
+    root.add('register', 'Register', partial('auth', 'register'));
     root.add('city', 'City', 'modules/city/partial/city.html');
+    root.add('scenario', 'Scenarios', partial('scenario', 'list')).run(function (route) {
+        route.add(':id', 'Scenario', partial('scenario', 'detail'));
+    });
+    root.add('overview', 'Overview', partial('application', 'index'));
+    root.add('recruitment', 'Recruitment', partial('application', 'recruitment'));
     root.add('technopedia', 'Technopedia', 'modules/technopedia/partial/index.html').run(function (route) {
         route.redirectTo = route.url() + 'facilities/';
         route.add('facilities', 'Facilities', 'modules/technopedia/partial/facilities.html');
