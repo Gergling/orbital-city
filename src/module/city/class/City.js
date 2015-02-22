@@ -2,10 +2,7 @@ module.exports = (function () {
     "use strict";
 
     var mongoose = require('mongoose'),
-        Model = mongoose.model('City', mongoose.Schema({
-            name: String,
-            tiles: [ require('../schema/tile') ]
-        })),
+        Model = mongoose.model('City', require("../schema/city")),
         City = function () {
             var name,
                 tiles;

@@ -13,7 +13,7 @@ module.exports = (function () {
 
         passport = require('passport'),
 
-        //expressSession = require('express-session'),
+        expressSession = require('express-session'),
 
         port = process.env.PORT || 8080; // set our port
 
@@ -36,18 +36,16 @@ module.exports = (function () {
     app.use(express.static('./src/public'));
 
     // Configure passport
-    //app.use(expressSession({secret: 'mySecretKey'})); // When in use, this key should be in a separate file in application.
+    app.use(expressSession({
+        secret: 'secret',
+        name: 'name',
+        //store: sessionStore, // connect-mongo session store
+        proxy: true,
+        resave: true,
+        saveUninitialized: true
+    })); // When in use, this key should be in a separate file in application.
     app.use(passport.initialize());
     app.use(passport.session());
-    passport.serializeUser(function(user, done) {
-        done(null, user._id);
-    });
-
-    passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
-            done(err, user);
-        });
-    });
 
     // Routing
     require('./src/module/application/controller')(app);
