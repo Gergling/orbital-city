@@ -1,29 +1,46 @@
-<div>
+<div data-ng-controller="auth.controller.register">
     <div class="row">
-        <div class="col-xs-12 col-sm-6">
-            <div class="input-group">
-                <span class="input-group-addon">Some field</span>
-                <input type="text" class="form-control" aria-label="...">
-                <span class="input-group-addon">
-                    <i class="glyphicon glyphicon-eye"></i>
-                    <input type="checkbox" aria-label="...">
-                </span>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-6">
-            <div class="input-group">
-                <span class="input-group-addon">Some field</span>
-                <input type="text" class="form-control" aria-label="...">
-                <span class="input-group-addon">
-                    <i class="glyphicon glyphicon-eye"></i>
-                    <input type="checkbox" aria-label="...">
-                </span>
-            </div>
+        <div class="col-xs-12">
+            <p>Are you an aggressive go-getter with an immortal genetic configuration who can hit the ground running?</p>
+
+            <p>If so, apply to the Orbital Inc. team for the position of Station Manager.</p>
+
+            <p>Ideal applicants will have:</p>
+            <ul>
+                <li>City-planning experience 50 years (25 years minimum*)</li>
+                <li>Immortal genetic configuration or minimum 500 years Life Expectancy Guarantee</li>
+            </ul>
+
+            <p>* Other experience will be taken into account, including simulated cities, building civilisations, or a documented history of godhood to a populous.</p>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-6">
-            Sliding gender boxes
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">Email</span>
+                    <input data-ng-model="signup.email" type="text" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <div password="signup.password"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div data-ng-repeat-start="gender in genders" class="col-xs-4 col-sm-2">
+            {{gender.label}}
+        </div>
+        <div data-ng-repeat-end class="col-xs-8 col-sm-4">
+            <input ng-model="gender.value" type="text" slider data-options="options" />
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <button class="btn btn-primary" type="submit" data-ng-click="submit();">Submit</button>
         </div>
     </div>
 </div>
