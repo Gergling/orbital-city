@@ -1,7 +1,35 @@
-<div data-ng-controller="scenario.controller.list">
-    <ul>
-        <li data-ng-repeat="scenario in list" class="pill">
-            {{scenario}}
+<div class="scenario" data-ng-controller="scenario.controller.list">
+    <div class="view-detail pill" data-ng-show="detail()">
+        <div close data-ng-click="detail(null);"></div>
+        <h3>{{detail().label}}</h3>
+        <p>{{detail().description}}</p>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">City Name</span>
+                <input class="form-control" type="text" data-ng-model="cityName" data-ng-change="validate();" />
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-ok" 
+                        style="color: green;" 
+                        data-ng-hide="checking || duplicate || !enabled"></i>
+                    <i class="glyphicon glyphicon-remove" 
+                        style="color: red;" 
+                        data-ng-show="!checking && (duplicate || !enabled)"></i>
+                    <i class="glyphicon glyphicon-refresh" 
+                        data-ng-show="checking"></i>
+                </span>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary"
+                        data-ng-class="{disabled: !enabled}"
+                        data-ng-click="invest();">Invest</button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <ul class="view-list">
+        <li data-ng-repeat="scenario in list" 
+            class="pill" 
+            data-ng-click="detail(scenario)">
+            {{scenario.label}}
         </li>
     </ul>
 </div>

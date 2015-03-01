@@ -1,0 +1,8 @@
+.scenario .view-detail {
+	position: absolute;
+	background-color: rgba(0, 0, 0, 0.8);
+}
+.scenario .view-list {
+	list-style: none;
+	padding-left: 0;
+}
