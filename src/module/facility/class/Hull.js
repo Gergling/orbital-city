@@ -1,11 +1,13 @@
 module.exports = (function () {
     "use strict";
 
-    var Facility = require('./Facility'),
+    var extend = require('deep-extend'),
+        Facility = require('./Facility'),
         Infrastructure = function () {
             var name,
                 label,
                 currentLevel = 0,
+                maxLevel = 2,
                 levels = [ ],
                 addLevel = function (level, name, label) {
                     levels.push({
@@ -24,9 +26,15 @@ module.exports = (function () {
                 return label;
             };
             this.upgrade = function () {
-                currentLevel += 1;
+                if (currentLevel <= maxLevel) {
+                    currentLevel += 1;
+                }
                 return this;
             };
+
+            addLevel(0, "none", "None");
+            addLevel(1, "basic", "Basic");
+            addLevel(2, "premium", "Premium");
         },
         Hull = function () {
             var infrastructure = [ ],
@@ -41,11 +49,15 @@ module.exports = (function () {
             addInfrastructure("water", "Water");
             addInfrastructure("data", "Data");
 
-            this.tile("empty");
+            this.label("Hull");
             this.description("Depending on how much you want to spend, each hull tile can include a configuration of infrastructure. Any infrastructured tile can only benefit from that infrastructure if they are next to an appropriate source or an enabled infrastructure of their type. Infrastructure requires maintenance.");
 
-            // Needs infrastructure, e.g. power, water, data
-            // Each has 3 levels - none, basic, premium
+            /*console.log(this, this.prototype);
+            this.view = function () {
+                return extend(this.prototype.view(), {
+                    // Include infrastructure information
+                });
+            };*/
         };
 
     Hull.prototype = new Facility();
