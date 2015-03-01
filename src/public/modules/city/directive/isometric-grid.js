@@ -37,12 +37,28 @@ angular.module("city").directive("cityIsometricGrid", [
                                 }
                             };
                         },
+                        tileOp = function ($event, fnc, always) {
+                            var el = $element.find('.isometric-grid'),
+                                x = $event.clientX - el.offset().left + $window.scrollX,
+                                y = $event.clientY - el.offset().top + $window.scrollY;
+
+                            $scope.tiles.forEach(function (tile) {
+                                always(tile);
+                                if (tile.boundsCheck(x - tile.left(), y - tile.top())) {
+                                    fnc(tile);
+                                }
+                            });
+                        },
                         drag = new Drag();
 
                     $scope.cellHeight = $scope.cellWidth / 2;
                     tiles.onChange(function () {$scope.tiles = tiles.visible(); });
-                    $scope.select = function (tile) {
-                        // Todo: Calculate exactly where the tile shape is, presumably using magic
+                    $scope.click = function ($event) {
+                        tileOp($event, function (tile) {
+                            tile.select(true);
+                        }, function (tile) {
+                            tile.select(false);
+                        });
                     };
                     $scope.mousedown = function ($event) {
                         drag.start($event);
@@ -51,17 +67,11 @@ angular.module("city").directive("cityIsometricGrid", [
                         drag.stop();
                     };
                     $scope.mousemove = function ($event) {
-                        var el = $element.find('.isometric-grid'),
-                            x = $event.clientX - el.offset().left + $window.scrollX,
-                            y = $event.clientY - el.offset().top + $window.scrollY;
-
                         drag.update($event);
-
-                        $scope.tiles.forEach(function (tile) {
+                        tileOp($event, function (tile) {
+                            tile.hover(true);
+                        }, function (tile) {
                             tile.hover(false);
-                            if (tile.boundsCheck(x - tile.left(), y - tile.top())) {
-                                tile.hover(true);
-                            }
                         });
                     };
                 }

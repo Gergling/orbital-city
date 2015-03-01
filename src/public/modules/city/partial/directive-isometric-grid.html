@@ -1,7 +1,8 @@
 <div class="isometric-grid unselectable" 
     style="top: {{cellHeight}}px;" 
+    data-ng-click="click($event)"
     data-ng-mousedown="mousedown($event)" 
     data-ng-mouseup="mouseup($event)" 
     data-ng-mousemove="mousemove($event)">
-    <div data-ng-repeat="tile in tiles" city-tile="tile" data-ng-click="select(tile)"></div>
+    <div data-ng-repeat="tile in tiles" city-tile="tile"></div>
 </div>
