@@ -2,17 +2,6 @@ module.exports = function (app) {
     "use strict";
 
     var passport = require('passport'),
-
-        //User = require('./model/User'),
-
-        fetchUser = function (req) {
-            // req.session.passport.user has the mongo id
-            // find the user with db.users.find({_id: ObjectId(id)})
-            if (req.session.passport.user) {
-                User.findById(req.session.passport.user, function () {
-                });
-            }
-        },
         isAuthenticated = function (req, res, next) {
             if (req.isAuthenticated()) {return next(); }
             res.sendStatus(403);
@@ -33,6 +22,31 @@ module.exports = function (app) {
         res.send(controller.create(req.params.x, req.params.y, req.params.z, req.params.facilityId));
     });
 
+    /*app.param('cityName', function (req, res, next, name) {
+        // TODO: Use the same check for city names when creating the actual city
+        var regex = new RegExp(/^[a-zA-Z0-9]$/);
+        if (regex.test(name)) {
+            next();
+        } else {
+            next('route');
+        }
+    });*/
+    /*app.param('scenarioName', function (req, res, next, name) {
+        var regex = new RegExp(/^[a-zA-Z0-9]$/);
+        if (regex.test(name)) {
+            next();
+        } else {
+            next('route');
+        }
+    });*/
+    app.get('/city/:cityName', function (req, res) {
+        var controller = require("../city/controller");
+
+        controller.city(req.params.cityName, function (cities) {
+            res.send(cities);
+        });
+    });
+    // Todo: Find a way to include player cities without being logged in.
     app.get('/city', isAuthenticated, function (req, res) {
         require("../city/controller").cities(req.session.passport.user, function (cities) {
             res.send(cities);
@@ -42,7 +56,7 @@ module.exports = function (app) {
     app.post('/city', function (req, res) {
         var controller = require("../city/controller");
 
-        controller.createCity(req.body.name, function (a, b, c, d) {
+        controller.create(req.body.name, function (a, b, c, d) {
             res.send([
                 a,
                 b, 
@@ -50,6 +64,30 @@ module.exports = function (app) {
                 d
             ]);
         });
+    });
+
+    app.get('/scenario', function (req, res) {
+        var user = false;
+        if (req.session.passport) {user = req.session.passport.user; }
+        res.send(require("../scenario/controller").scenarios(user));
+    });
+    /*app.param('scenarioName', function (req, res, next, name) {
+        var regex = new RegExp(/^[a-z]$/);
+        if (regex.test(name)) {
+            next();
+        } else {
+            next('route');
+        }
+    });*/
+    app.post('/scenario', isAuthenticated, function (req, res) {
+        require("../scenario/controller").generate(
+            req.session.passport.user,
+            req.body.scenarioName,
+            req.body.cityName,
+            function (response) {
+                res.send(response);
+            }
+        );
     });
 
     app.get('/environments', function (req, res) {
