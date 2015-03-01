@@ -39,3 +39,11 @@
    -ms-user-select: none;
    user-select: none;
 }
+[close] {
+	padding: 2px 4px 0 4px;
+	float: right;
+	border-style: solid;
+	border-color: #2df;
+	border-radius: 20px;
+	border-width: 4px;	
+}
