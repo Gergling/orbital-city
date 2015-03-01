@@ -19,8 +19,6 @@ module.exports = function (grunt) {
                 'src/public_html/angular.bootstrap.run.js' // Bootstrap.
             ],
             client: [
-                'src/public/modules/NGModule.js',
-                'src/public/index.js',
                 'src/public/modules/**/module.js',
                 'src/public/modules/**/*.js'
             ],
@@ -67,7 +65,11 @@ module.exports = function (grunt) {
                             if (source.match('glyphicons-halflings-regular')) {
                                 return require('path').join(component, 'fonts');
                             }
-                            return component;
+                        }
+                        if (component === 'ng-slider') {
+                            if (source.match('ng-slider.min.css')) {
+                                return require('path').join(component, 'css');
+                            }
                         }
                         return component;
                     }
@@ -257,6 +259,16 @@ module.exports = function (grunt) {
         },
 
         copy: {
+            install: {
+                files: [
+                    {
+                        expand: true,
+                        cwd:    'bower_components/ng-slider/dist/',
+                        src:    'img/*',
+                        dest:   'src/public/vendor/ng-slider/'
+                    }
+                ]
+            },
             build: {
                 files: [
                     {
@@ -317,7 +329,7 @@ module.exports = function (grunt) {
                 ],
                 tasks: [
                     'execute:images',
-                    //'jslint:server'
+                    'jslint:server'
                 ]
             }
         },
@@ -358,6 +370,12 @@ module.exports = function (grunt) {
 
     // Default task
     grunt.registerTask('default', [ 'build' ]);
+
+    grunt.registerTask('install', [
+        'bower',
+        'copy:install',
+        'template'
+    ]);
 
     grunt.registerTask('build', [
         'bower',       // Install dependencies with bower
