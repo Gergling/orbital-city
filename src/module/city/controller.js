@@ -18,16 +18,21 @@ module.exports = (function () {
                 }
             });
         },
-        createCity: function (name, cb) {
+        city: function (name, cb) {
+            var city = new City();
+            city.name(name);
+            city.find(cb);
+        },
+        /*create: function (name, cb) {
             //City.find({name: name}).execFind(cb);
             var city = new City();
             city.name(name);
             city.save(cb);
-            /*var city = new City();
-            city.name = name;
+            //var city = new City();
+            //city.name = name;
             // Check if city exists
-            city.save(cb);*/
-        },
+            //city.save(cb);
+        },*/
         tiles: function () {
             // All city tiles must be returned.
             // Each one will have a list of facility options
