@@ -9,11 +9,15 @@ angular.module("city").service("city.service.api", [
 
         var all = Restangular.all('city');
 
-        this.create = function () {
-            all.post({name: "Void Walker 2"}).then(function (response) {
+        this.create = function (scenarioName, cityName) {
+            return all.post({scenario: scenarioName, name: cityName}).then(function (response) {
                 console.log(response);
             });
         };
         this.list = all.getList;
+        this.find = function (name) {
+            // response.cities
+            return Restangular.one('city', name).get();
+        };
     }
 ]);

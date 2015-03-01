@@ -37,6 +37,7 @@ angular.module("city").service("city.service.tiles", [
             };
 
         (function () {
+            // TODO: Generate some empty tiles.
             var x = 0, z = 0, tile;
             for (z = 0; z < 3; z += 1) {
                 for (x = 0; x < 3; x += 1) {

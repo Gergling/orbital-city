@@ -11,7 +11,8 @@ angular.module("city").factory("city.class.Tile", [
             var point = new Point(),
                 size = new Point(100, 50),
                 show = true,
-                hover = false;
+                hover = false,
+                select = false;
 
             this.left = function () {return ((point.x() + point.z() - view.camera().z()) * size.x() / 2) + view.camera().x(); };
             this.top = function () {return ((point.x() + 1 - point.z() - point.y()) * size.y() / 2) + view.camera().y(); };
@@ -24,6 +25,11 @@ angular.module("city").factory("city.class.Tile", [
             this.hover = function (value) {
                 if (value || value === false) {hover = value; }
                 return hover;
+            };
+            this.select = function (value) {
+                if (value || value === false) {select = value; }
+                // Todo: By default, generate a Hull here.
+                return select;
             };
             this.boundsCheck = function (x, y) {
                 var half = {
