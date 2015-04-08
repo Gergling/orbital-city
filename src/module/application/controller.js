@@ -119,4 +119,13 @@ module.exports = function (app) {
         failureFlash : true 
     }));
 
+    // Player information
+    app.get('/player', isAuthenticated, function (req, res) {
+        require("../player/controller").profile(req.session.passport.user, function (player) {
+            res.send(player);
+        });
+    });
+    app.get('/players', isAuthenticated, function (req, res) {
+        res.send([ ]);
+    });
 };
