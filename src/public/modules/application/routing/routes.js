@@ -147,7 +147,7 @@ angular.module("application").constant("application.constant.routes", (function 
         route.add(':id', 'Scenario', partial('scenario', 'detail'));
     });
     root.add('overview', 'Overview', partial('application', 'index'));
-    root.add('recruitment', 'Recruitment', partial('application', 'recruitment'));
+    root.add('news', 'News', partial('application', 'recruitment'));
     root.add('technopedia', 'Technopedia', 'modules/technopedia/partial/index.html').run(function (route) {
         route.redirectTo = route.url() + 'facilities/';
         route.add('facilities', 'Facilities', 'modules/technopedia/partial/facilities.html');
