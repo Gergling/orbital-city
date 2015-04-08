@@ -63,21 +63,25 @@ module.exports = function (grunt) {
                             type: type,
                             module: module,
                             fnc: fnc,
-                            camelName: camel(name)
+                            camelName: camel(module + "-" + name)
                         }
                     },
                     files: (function () {
-                        var ret = { };
-                        switch(type) {
-                        case "directive":
-                            ret[file] = 'src/templates/code/grunt-ng-directive.js.tpl';
-                            break;
-                        case "class":
-                            ret[file] = 'src/templates/code/grunt-ng-class.js.tpl';
-                            break;
-                        default:
+                        var ret = { },
+                            special = [ "component", "directive" ];
+
+                        if (special.indexOf(type) > -1) {
+                            ret[file] = 'src/templates/code/grunt-ng-' + type + '.js.tpl'
+                        } else {
                             ret[file] = 'src/templates/code/grunt-ng-component.js.tpl';
                         }
+                        
+                        grunt.file.write([
+                            "src/public/modules",
+                            module,
+                            'partial',
+                            "directive-" + fileName + ".html"
+                        ].join("/"));
                         return ret;
                     }())
                 });
