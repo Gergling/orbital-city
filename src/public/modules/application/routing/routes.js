@@ -141,7 +141,7 @@ angular.module("application").constant("application.constant.routes", (function 
         // Registration page: needs easy access for the non-authenticated.
     root.add('login', 'Login', partial('auth', 'login')); // Control visibility from an auth module service hook.
     root.add('register', 'Register', partial('auth', 'register'));
-    root.add('city', 'City', 'modules/city/partial/city.html');
+    root.add('city', 'City', partial('city', 'city'));
     root.add('scenario', 'Scenarios', partial('scenario', 'list')).run(function (route) {
         route.add(':id', 'Scenario', partial('scenario', 'detail'));
     });
