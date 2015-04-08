@@ -7,6 +7,7 @@ angular.module("application", [
 
     "auth",
     "city",
+    "player",
     "scenario",
     "technopedia"
 ]);
