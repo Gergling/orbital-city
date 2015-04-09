@@ -7,27 +7,23 @@ angular.module("auth").controller("auth.controller.register", [
     function ($scope, $location, register) {
         "use strict";
 
-        $scope.options = {
-            from:   0,
-            to:     1,
-            step:   0.05,
-            round: 2,
-            css: {
-                background: {"background-color": "silver"},
-                before: {"background-color": "purple"},
-                default: {"background-color": "white"},
-                after: {"background-color": "green"},
-                pointer: {"background-color": "red"}          
-            }
-        };
-
-        $scope.genders = [
+        $scope.genders = [ ];
+        [
             { label: "Female", value: 0 },
             { label: "Male", value: 0 },
-            { label: "Blue", value: 0 },
+            { label: "Blue", value: 0.5 },
             { label: "Sideways", value: 0 },
             { label: "Peppermint", value: 0 }
-        ];
+        ].forEach(function (gender) {
+            gender.slider = gender.value * 50;
+            $scope.genders.push(gender);
+        });
+
+        $scope.$watch("genders", function () {
+            $scope.genders.forEach(function (gender) {
+                gender.value = gender.slider / 50;
+            });
+        }, true);
 
         $scope.signup = {
             email: "a@b.c",

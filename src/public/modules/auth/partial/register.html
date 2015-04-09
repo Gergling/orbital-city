@@ -30,13 +30,18 @@
         </div>
     </div>
     <div class="row">
-        <div data-ng-repeat-start="gender in genders" class="col-xs-4 col-sm-2">
-            {{gender.label}}
+        <div data-ng-repeat="gender in genders">
+            <div class="col-xs-4 col-sm-2">
+                {{gender.label}} ({{gender.value}})
+            </div>
+            <div class="col-xs-8 col-sm-4">
+                <!-- Unfortunately requires jquery.ui library for themes. These can probably go if overwriting the style. -->
+                <div style="height: 40px;">
+                    <div ui-slider min="0" max="50" ng-model="gender.slider"></div>
+                </div>
+            </div>
         </div>
-        <div data-ng-repeat-end class="col-xs-8 col-sm-4">
-            <input ng-model="gender.value" type="text" slider data-options="options" />
-            <div style="clear: both;"></div>
-        </div>
+        <div style="clear: both;"></div>
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-6">
