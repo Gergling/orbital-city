@@ -10,7 +10,7 @@ angular.module("application").constant("application.constant.routes", (function 
                 active = false,
                 level = 0,
                 parent,
-                visible = true;
+                redirect = { };
 
             this.level = function (value) {return level; };
             this.ancestor = function (value) {
@@ -63,11 +63,8 @@ angular.module("application").constant("application.constant.routes", (function 
             this.children = function (filter) {
                 var filtered = children;
                 if (filter) {
-                    filtered = [ ];
-                    children.forEach(function (child) {
-                        if (filter === child.name()) {
-                            filtered.push(child);
-                        }
+                    filtered = children.filter(function (child) {
+                        return filter === child.name();
                     });
                 }
                 return filtered;
@@ -95,11 +92,11 @@ angular.module("application").constant("application.constant.routes", (function 
                 }
                 return active;
             };
-            this.visible = function (value) {
-                if (value || value === false) {
-                    visible = value;
+            this.redirect = function (value) {
+                if (value) {
+                    redirect = angular.extend(redirect, value);
                 }
-                return visible;
+                return redirect;
             };
             this.activeDescendant = function () {
                 var descendant = this;
@@ -124,29 +121,27 @@ angular.module("application").constant("application.constant.routes", (function 
             return 'modules/' + module + '/partial/' + name + '.html';
         };
 
-    // Todo: New primary nav
-        // Login (Default - Guest)
-        // Register (Guest)
-        // City (Default - Auth)
-        // Technopedia
-    // Todo: New routes
-        /* 
-            /register/
-            /login/
-            /city/ - views list of player's cities
-            /city/:id/ - gameplay screen
-            /scenario/ - views list of scenarios
-            /scenario/:id/ - views specific scenario
-        */
-        // Registration page: needs easy access for the non-authenticated.
-    root.add('login', 'Login', partial('auth', 'login')); // Control visibility from an auth module service hook.
-    root.add('register', 'Register', partial('auth', 'register'));
-    root.add('profile', 'Profile', partial('player', 'profile'));
-    root.add('city', 'City', partial('city', 'city'));
-    root.add('scenario', 'Scenarios', partial('scenario', 'list')).run(function (route) {
-        route.add(':id', 'Scenario', partial('scenario', 'detail'));
+    // Displayed for guest only
+    [
+        root.add('login', 'Login', partial('auth', 'login')), // Control visibility from an auth module service hook.
+        root.add('register', 'Register', partial('auth', 'register'))
+    ].forEach(function (route) {
+        route.redirect({ auth: '/city/' });
     });
-    root.add('overview', 'Overview', partial('application', 'index'));
+
+    // Displayed for authenticated only
+    [
+        root.add('profile', 'Profile', partial('player', 'profile')),
+        root.add('city', 'City', partial('city', 'city')),
+        root.add('scenario', 'Scenarios', partial('scenario', 'list')).run(function (route) {
+            route.add(':id', 'Scenario', partial('scenario', 'detail'));
+        }),
+        root.add('overview', 'Overview', partial('application', 'index'))
+    ].forEach(function (route) {
+        route.redirect({ guest: '/login/' });
+    });
+
+    // Displayed for everybody
     root.add('news', 'News', partial('application', 'recruitment'));
     root.add('technopedia', 'Technopedia', 'modules/technopedia/partial/index.html').run(function (route) {
         route.redirectTo = route.url() + 'facilities/';
@@ -156,5 +151,6 @@ angular.module("application").constant("application.constant.routes", (function 
         route.add('aliens', 'Aliens', 'modules/technopedia/partial/aliens.html');
     });
 
+    // Any authenticated page accessed by a guest redirects to login page.
     return root;
 }()));

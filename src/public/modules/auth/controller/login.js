@@ -1,9 +1,10 @@
 angular.module("auth").controller("auth.controller.login", [
 
     "$scope",
+    "$location",
     "auth.service.login",
 
-    function ($scope, login) {
+    function ($scope, $location, login) {
         "use strict";
 
         $scope.login = {
@@ -16,7 +17,7 @@ angular.module("auth").controller("auth.controller.login", [
                 username: $scope.login.username,
                 password: $scope.login.password,
             }).then(function (response) {
-                // Redirect to suitable page.
+                $location.path('/');
             });
         };
     }
