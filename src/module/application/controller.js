@@ -109,8 +109,8 @@ module.exports = function (app) {
     app.post('/login', passport.authenticate('login', {
         //successRedirect: '/home',
         //failureRedirect: '/',
-        failureFlash : true 
-    }));
+        //failureFlash : true 
+    }), function (req, res) {res.send(req.session);});
 
     /* Handle Registration POST */
     app.post('/signup', passport.authenticate('signup', {
@@ -119,13 +119,18 @@ module.exports = function (app) {
         failureFlash : true 
     }));
 
-    // Player information
-    app.get('/player', isAuthenticated, function (req, res) {
-        require("../player/controller").profile(req.session.passport.user, function (player) {
-            res.send(player);
-        });
+    // Player Information
+    app.get('/player', function (req, res) {
+        if (req.isAuthenticated()) {
+            require("../player/controller").profile(req.session.passport.user, function (player) {
+                res.send(player);
+            });
+        } else {
+            res.send({ });
+        }
     });
-    app.get('/players', isAuthenticated, function (req, res) {
+    app.get('/players', function () {
         res.send([ ]);
     });
+
 };
