@@ -3,10 +3,15 @@ module.exports = function (grunt) {
 
     var paths = {
             vendor: [
+                // Must be included first
                 'src/public/vendor/jquery/jquery.js',
                 'src/public/vendor/angular/angular.js',
                 'src/public/vendor/lodash/lodash.compat.js',
+
+                // Everything else
                 'src/public/vendor/*/*.js',
+
+                // Exclusions from standard vendor libraries
                 '!src/public/vendor/angular-mocks/angular-mocks.js',
                 'src/public/vendor/bootstrap/bootstrap.js'
             ],
