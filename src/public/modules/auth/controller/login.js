@@ -15,9 +15,9 @@ angular.module("auth").controller("auth.controller.login", [
         $scope.submit = function () {
             login.submit({
                 username: $scope.login.username,
-                password: $scope.login.password,
+                password: $scope.login.password
             }).then(function (response) {
-                $location.path('/');
+                $location.path(login.redirect());
             });
         };
     }

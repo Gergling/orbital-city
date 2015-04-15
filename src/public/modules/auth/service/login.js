@@ -7,7 +7,13 @@ angular.module("auth").service("auth.service.login", [
     function ($q, Restangular, auth) {
         "use strict";
 
-        var login = Restangular.all('login');
+        var login = Restangular.all('login'),
+            redirect = '/';
+
+        this.redirect = function (value) {
+            if (value) {redirect = value; }
+            return redirect;
+        };
 
         this.submit = function (params) {
             return $q.all([
