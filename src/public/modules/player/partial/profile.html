@@ -1,1 +1,17 @@
-Profile!
+<div data-ng-controller="player.controller.profile">
+
+    <div class="form-group" data-ng-repeat="field in profile">
+        <div class="input-group">
+            <span class="input-group-addon">{{field.label}}</span>
+            <input data-ng-model="field.value" type="text" class="form-control" />
+            <span class="input-group-btn">
+                <button class="btn btn-info" type="button" data-ng-click="field.refresh()">
+                    <i class="glyphicon glyphicon-refresh"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-info" data-ng-click="save();">Save</button>
+
+</div>

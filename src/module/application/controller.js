@@ -129,6 +129,15 @@ module.exports = function (app) {
             res.send({ });
         }
     });
+    app.post('/player/:userId', isAuthenticated, function (req, res) {
+        if (req.session.passport.user === req.params.userId) {
+            require("../player/controller").edit(req.session.passport.user, req.body, function (response) {
+                res.send(response);
+            });
+        } else {
+            res.sendStatus(403);
+        }
+    });
     app.get('/players', function () {
         res.send([ ]);
     });
