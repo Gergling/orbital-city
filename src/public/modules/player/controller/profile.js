@@ -18,8 +18,8 @@ angular.module("player").controller("player.controller.profile", [
             },
             update = function () {
                 $scope.profile.forEach(function (field) {
-                    field.value = current[field.property];
-                    field.original = current[field.property];
+                    field.value = current[field.property]();
+                    field.original = current[field.property]();
                 });
             };
 

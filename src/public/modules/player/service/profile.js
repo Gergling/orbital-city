@@ -24,7 +24,10 @@ angular.module("player").service("player.service.profile", [
             // Need to read up on how rest works.
             current.fetch().then(function (c) {
                 player.post(c.userId(), data).then(function (response) {
-                    scope.name = response.name;
+                    scope.name(response.name);
+                    current.name(response.name);
+                    current.update(deferred.promise);
+                    // Update current service
                     deferred.resolve(scope);                
                 });
             });

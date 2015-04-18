@@ -8,26 +8,39 @@ angular.module("player").service("player.service.current", [
 
         var scope = this,
             player = Restangular.one('player'),
-            userId;
+            userId,
+            name,
+            callbacks = [ ];
 
         this.userId = function () {return userId; };
 
         this.fetch = function (forceUpdate) {
             var deferred = $q.defer();
 
+            scope.update(deferred.promise);
+
             if (userId && !forceUpdate) {
                 deferred.resolve(scope);
             } else {
-                console.log(this);
                 player.get().then(function (response) {
-                    scope.name = response.name;
+                    name = response.name;
                     userId = response.userId;
                     deferred.resolve(scope);
-                    console.log(scope);
                 });
             }
 
             return deferred.promise;
+        };
+
+        this.callback = function (cb) {callbacks.push(cb); };
+        this.update = function (promise) {
+            callbacks.forEach(function (cb) {
+                cb(promise);
+            });
+        };
+        this.name = function (value) {
+            if (value) {name = value; }
+            return name;
         };
 
         this.fetch();

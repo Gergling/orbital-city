@@ -1,1 +1,14 @@
-Stuff!
+<div class="form-group">
+
+    <div class="btn-group">
+        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            {{name()}} <span data-ng-show="loading()">(Loading...)</span> <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#/profile/">Profile</a></li>
+            <li class="divider"></li>
+            <li><a data-ng-click="">Logout</a></li>
+        </ul>
+    </div>
+
+</div>
