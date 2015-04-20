@@ -22,9 +22,10 @@ angular.module("application")
         "application.constant.routes",
         "application.routes.service",
         "auth.service.login",
+        "auth.service.auth",
         "$route",
 
-        function ($scope, $location, root, routes, login, $route) {
+        function ($scope, $location, root, routes, login, auth, $route) {
             "use strict";
 
             $scope.navigation = routes;
@@ -40,5 +41,7 @@ angular.module("application")
                     login.redirect(previous.url());
                 }
             });
+
+            auth.update();
         }
     ]);
