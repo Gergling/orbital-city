@@ -36,7 +36,7 @@ angular.module("application")
                     next.active(true);
                     $location.path(routes.redirect(next));
                 }
-                if (previous) {
+                if (previous && previous.url) {
                     login.redirect(previous.url());
                 }
             });

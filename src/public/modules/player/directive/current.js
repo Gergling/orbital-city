@@ -25,6 +25,8 @@ angular.module("player").directive("playerCurrent", function () {
 
                 $scope.name = function () {return name; };
                 $scope.loading = function () {return loading; };
+
+                player.fetch();
             }
         ]
     };
